@@ -70,8 +70,6 @@ double objectivefzRcpp(
 	}
 	NumericVector aj = rowMeans(aj1Ts,true);
 	NumericVector bj = rowMeans(bj1Ts,true);
-	//Rcout << "The value of aj : " << aj << "\n";
-	//Rcout << "The value of bj : " << bj << "\n";
 	double f=0;
 	for (t=0;t<T;t++) {
 		NumericVector bjt = bj1T(_,t);
@@ -153,8 +151,6 @@ NumericMatrix hessRcpp(
 	NumericVector bj = rowMeans(bj1Ts,true);
 	NumericVector Tj= rowSumsNotNA(bj1T);
 	NumericMatrix f(2*T-2,2*T-2);
-	// Rcout << "The value of aj : " << aj << "\n";
-	// Rcout << "The value of bj : " << bj << "\n";
 
 	double saj1Ts, p1PAs, p1PAk, pPAs, pPBs, pPAk, pPBk, ppPAsAk=0, ppPBsBk=0, ppPAsBk=0, ppPBsAk=0;
 	double SPt,SpPAs,SpPAk,SpPBs,SpPBk,SppPAsAk,SppPBsAk,SppPAsBk,SppPBsBk;
@@ -256,19 +252,6 @@ NumericMatrix hessRcpp(
 								if ((s!=t) & (k==t)) ppPAsBk=(pPBk-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPBk)*p1PAs + pPLP(j,i)*D/Tj[i]*(aj1T(i,s)/pow(A[s],2)*(1/Tj[i]*(bj1T(i,k)!=0)-1)); //second derivative of Pmjts with respect to AsBk (Equation 66)
 								if ((s!=t) & (k!=t)) ppPAsBk=(pPBk-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPBk)*p1PAs + pPLP(j,i)*D/Tj[i]*(aj1T(i,s)/pow(A[s],2)/Tj[i])*(aj1T(i,k)!=0); //second derivative of Pmjts with respect to AsBk (Equation 65)
 
-								// Rcout << "The value of i : " << i << "\n";
-								// Rcout << "The value of t : " << t << "\n";
-								// Rcout << "The value of s : " << s << "\n";
-								// Rcout << "The value of k : " << k << "\n";
-								// Rcout << "The value of ppPAsAk : " << ppPAsAk << "\n";
-								// Rcout << "The value of pPAk : " << pPAk << "\n";
-								// Rcout << "The value of p1PAk : " << p1PAk << "\n";
-								// Rcout << "The value of p1PAs : " << p1PAs << "\n";
-								// Rcout << "The value of ppPBsBk : " << ppPBsBk << "\n";
-								// Rcout << "The value of ppPBsAk : " << ppPBsAk << "\n";
-								// Rcout << "The value of ppPAsBk : " << ppPAsBk << "\n";
-								
-								
 								if ((nummet==1) & (bj1T(i,t)!=0)) {
 									f(s-minustos,k-minustok)+= (pPAs*pPAk -(Pt(j,i)-Pts(j,i))*ppPAsAk)*wt[j];
 									f(s+T-1-minustos,k-minustok)+= (pPBs*pPAk -(Pt(j,i)-Pts(j,i))*ppPBsAk)*wt[j];
@@ -353,7 +336,6 @@ NumericVector gradRcpp(
 	NumericVector bj = rowMeans(bj1Ts,true);
 	NumericVector Tj= rowSumsNotNA(bj1T);
 	NumericVector f(2*T-2);
-	// Rcout << "The value of bj : " << bj << "\n";
 
 	double saj1Ts, p1PAs, pPAs, pPBs;
 	double SPt,SpPAs,SpPBs;
@@ -408,12 +390,6 @@ NumericVector gradRcpp(
 							if (s==t) pPBs=pPLP(j,i)*D*aj[i]*(1-1/Tj[i]*(bj1T(i,t)!=0)); //first derivative of Pmjts with respect to  Bs (Equations 50, 51)
 							if (s!=t) pPBs=-pPLP(j,i)*D*aj[i]/Tj[i]*(bj1T(i,s)!=0); //first derivative of Pmjts with respect to Bs (Equations 52, 53)
 
-							// Rcout << "The value of i : " << i << "\n";
-							// Rcout << "The value of t : " << t << "\n";
-							// Rcout << "The value of s : " << s << "\n";
-							// Rcout << "The value of k : " << k << "\n";
-							// Rcout << "The value of pPAk : " << pPAk << "\n";
-							
 							if ((nummet==1) & (bj1T(i,t)!=0)) {
 								f[s-minusto]+=   -(Pt(j,i)-Pts(j,i))*pPAs*wt[j];
 								f[s+T-1-minusto]+= -(Pt(j,i)-Pts(j,i))*pPBs*wt[j];
@@ -603,16 +579,6 @@ List partialABgammaRcpp(
 								if (s==t) ppPts_Bb=  (pPtsgamma_b-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_b)*D*aj[i]*(1-1/Tj[i]);
 								if (s!=t) ppPts_Bb= -(pPtsgamma_b-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_b)*D*aj[i]/Tj[i]*(bj1T(i,s)!=0);
 								co=posnomi(i,k);
-								// Rcout << "The value of t : " << t << "\n";
-								// Rcout << "The value of s : " << s << "\n";
-								// Rcout << "The value of j : " << j << "\n";
-								// Rcout << "The value of i : " << i << "\n";
-								// Rcout << "The value of pPtgamma_a : " << pPtgamma_a << "\n";
-								// Rcout << "The value of pPtsgamma_a : " << pPtsgamma_a << "\n";
-								// Rcout << "The value of SpPBs_j : " << SpPBs[j] << "\n";
-								// Rcout << "The value of Pt : " << Pt(j,i) << "\n";
-								// Rcout << "The value of Pts : " << Pts(j,i) << "\n";
-								// Rcout << "The value of ppPts_Aa : " << ppPts_Aa << "\n";
 								if (nummet==1) {
 									out_a(s,co) += ((pPtgamma_a-pPtsgamma_a)*(-pPAs(j,i))-(Pt(j,i)-Pts(j,i))*ppPts_Aa)*wt[j];
 									out_a(s+T,co) += ((pPtgamma_a-pPtsgamma_a)*(-pPBs(j,i))-(Pt(j,i)-Pts(j,i))*ppPts_Ba)*wt[j];
@@ -695,10 +661,6 @@ List ipfRcpp(NumericMatrix aj1T, int base, double eps) {
 	NumericVector bj2(TT);
 	NumericVector ai(ni);
 	bj1=hpj/cd;
-	//Rcout << "The value of hpi : " << hpi << "\n";
-	//Rcout << "The value of hpj : " << hpj << "\n";
-	//Rcout << "The value of bj1 : " << bj1 << "\n";
-	//Rcout << "The value of cd : " << cd << "\n";
 	double value=10;
 	while (value>eps) {
 		NumericVector den1(ni);
@@ -713,7 +675,6 @@ List ipfRcpp(NumericMatrix aj1T, int base, double eps) {
 		bj2=hpj/den;
 		value=max(abs(bj2-bj1));
 		bj1=clone(bj2);
-		//Rcout << "The value of bj1 end : " << bj1 << "\n";
 	}
 	NumericVector As(TT);
 	As=bj2/bj2[ref];

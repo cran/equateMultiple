@@ -1,7 +1,7 @@
 Package: equateMultiple
 Type: Package
 Title: Equating of Multiple Forms
-Version: 0.0.0
+Version: 0.0.1
 Author: Michela Battauz
 Maintainer: Michela Battauz <michela.battauz@uniud.it>
 Description: Equating of multiple forms using Item Response Theory (IRT) methods (Battauz M. (2017) <doi:10.1007/s11336-016-9517-x> and Haberman S. J. (2009) <doi:10.1002/j.2333-8504.2009.tb02197.x>).
@@ -12,6 +12,6 @@ LinkingTo: Rcpp, RcppArmadillo
 Suggests: knitr, rmarkdown, ltm
 VignetteBuilder: knitr
 NeedsCompilation: yes
-Packaged: 2017-11-02 16:09:43 UTC; Michela
+Packaged: 2020-10-26 08:11:39 UTC; pc
 Repository: CRAN
-Date/Publication: 2017-11-02 18:12:55 UTC
+Date/Publication: 2020-10-26 08:50:02 UTC
