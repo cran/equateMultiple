@@ -376,9 +376,12 @@ multiec_irf<-function(mods,base,nq=30,method,se,start,eval.max=10000,trace=FALSE
 	for (k in 1:length(mods)) 
 		tab<-merge(tab,mods[[k]]$coef,by.x="itms",by.y=0,all=T,suffixes=c(k-1,k))
 	colnames(tab)[-1]<-modsnames
-	tab<-tab[rowSums(!is.na(tab[,-1]))>=2,]
-	
 	tab$itms<-as.character(tab$itms)
+	rownames(tab)<-tab$itms
+	sel_administered2plus<-rowSums(!is.na(tab[,-1]))>=2
+	items_administered2plus<-tab$itms[sel_administered2plus]
+	tab_restr<-tab[sel_administered2plus,]
+	
 	itmp<-2
 	if (sum(substr(tab$itms,1,6)=="Dscrmn")==0) itmp=1
 	if (sum(substr(tab$itms,1,6)=="Gussng")>0) itmp=3
@@ -392,19 +395,25 @@ multiec_irf<-function(mods,base,nq=30,method,se,start,eval.max=10000,trace=FALSE
 	wt<-gq$weights
 
 	ni<-nrow(tab)/itmp
+	ni_restr<-nrow(tab_restr)/itmp
 	bj1T<-as.matrix(tab[substr(tab$itms,1,6)=="Dffclt",][,-1])
 	if (itmp>1) aj1T<-as.matrix(tab[substr(tab$itms,1,6)=="Dscrmn",][,-1])
-	if (itmp==1) aj1T<-matrix(1,ni,T); aj1T[is.na(bj1T)]<-NA
+	if (itmp==1) {aj1T<-matrix(1,ni,T); aj1T[is.na(bj1T)]<-NA}
 	if (itmp==3) cj1T<-as.matrix(tab[substr(tab$itms,1,6)=="Gussng",][,-1])
 	if (itmp<3) cj1T<-matrix(0,ni,T)
 	if (method=="irf") nummet<-1
 	if (method=="trf") nummet<-2
+	bj1T_restr<-bj1T[rownames(bj1T)%in%items_administered2plus,]
+	if (itmp>1) aj1T_restr<-aj1T[rownames(aj1T)%in%items_administered2plus,]
+	if (itmp==1) {aj1T_restr<-matrix(1,ni_restr,T); aj1T[is.na(bj1T)]<-NA}
+	if (itmp==3) cj1T_restr<-cj1T[rownames(cj1T)%in%items_administered2plus,]
+	if (itmp<3) cj1T_restr<-matrix(0,ni_restr,T)
 	# the following uses Rcpp function
-	out<-nlminb(start=ini,objective=objectivefzRcpp,gradient=gradRcpp,hessian=hessRcpp,T=T,ab=ab,wt=wt,aj1T=aj1T,bj1T=bj1T,cj1T=cj1T,nummet=nummet,itmp=itmp,D=1,base=base,control=list(iter.max=100000,eval.max=eval.max,trace=trace))
+	out<-nlminb(start=ini,objective=objectivefzRcpp,gradient=gradRcpp,hessian=hessRcpp,T=T,ab=ab,wt=wt,aj1T=aj1T_restr,bj1T=bj1T_restr,cj1T=cj1T_restr,nummet=nummet,itmp=itmp,D=1,base=base,control=list(iter.max=100000,eval.max=eval.max,trace=trace))
 	#out<-nlminb(start=ini,objective=objectivefzRcpp,T=T,ab=ab,wt=wt,aj1T=aj1T,bj1T=bj1T,cj1T=cj1T,nummet=nummet,itmp=itmp,D=1,base=base,control=list(iter.max=100000,eval.max=eval.max,trace=trace))
 	if (check) {
 		# the following uses R function
-		outR<-nlminb(start=ini,objective=obj,T=T,ni=ni,ab=ab,aj1T=aj1T,bj1T=bj1T,cj1T=cj1T,met=method,itmp=itmp,wt=wt,D=1,base=base,control=list(iter.max=100000,eval.max=eval.max,trace=FALSE))
+		outR<-nlminb(start=ini,objective=obj,T=T,ni=ni_restr,ab=ab,aj1T=aj1T_restr,bj1T=bj1T_restr,cj1T=cj1T_restr,met=method,itmp=itmp,wt=wt,D=1,base=base,control=list(iter.max=100000,eval.max=eval.max,trace=FALSE))
 		# test if Rcpp function returns the same value of the R function:
 		cat("check parameter estimation \n")
 		print(max(abs(out$par-outR$par)))
@@ -439,12 +448,12 @@ multiec_irf<-function(mods,base,nq=30,method,se,start,eval.max=10000,trace=FALSE
 		cat("Computation of standard errors ")
 		# h1 is the matrix of second derivatives at the minimum (hessian)
 		# the following uses Rcpp function
-		h1<-hessRcpp(par=out$par,T=T,ab=ab,wt=wt,aj1T=aj1T,bj1T=bj1T,cj1T=cj1T,nummet=nummet,itmp=itmp,D=1,base=base)
+		h1<-hessRcpp(par=out$par,T=T,ab=ab,wt=wt,aj1T=aj1T_restr,bj1T=bj1T_restr,cj1T=cj1T_restr,nummet=nummet,itmp=itmp,D=1,base=base)
 		colnames(h1)<-c(rep("A",T-1),rep("B",T-1))
 		cat(" . ")
 		if (check) {
 			# the following uses R function
-			h1R<-hessR(par=out$par,T=T,ni=ni,ab=ab,tab=tab,met=method,itmp=itmp,wt=wt,D=1,base=base)
+			h1R<-hessR(par=out$par,T=T,ni=ni_restr,ab=ab,tab=tab_restr,met=method,itmp=itmp,wt=wt,D=1,base=base)
 			if (itmp==1) h1R[1:(T-1),]<-h1R[,1:(T-1)]<-0
 			# test if Rcpp function returns the same value of the R function:
 			cat("\n check hessian matrix \n")
@@ -455,22 +464,22 @@ multiec_irf<-function(mods,base,nq=30,method,se,start,eval.max=10000,trace=FALSE
 		
 		# pfABg is the matrix of second derivatives with respect to the equating coefficients and the item parameters
 		# the following uses Rcpp function
-		pfABg<-pABgammaR2C(par=out$par,T=T,ab=ab,wt=wt,aj1T=aj1T,bj1T=bj1T,cj1T=cj1T,nummet=nummet,itmp=itmp,D=1,base=base)
+		pfABg<-pABgammaR2C(par=out$par,T=T,ab=ab,wt=wt,aj1T=aj1T_restr,bj1T=bj1T_restr,cj1T=cj1T_restr,nummet=nummet,itmp=itmp,D=1,base=base)
 		if (itmp==1) {pfABg[1:(T-1),]<-0; pfABg<-pfABg[,grep("Dffclt",colnames(pfABg))]}
 		cat(" . ")
 		if (check) {
 			# the following uses R function
-			pfABgR<-pABgammaR(A=As,B=Bs,T=T,ni=ni,ab=ab,tab=tab,met=method,itmp=itmp,wt=wt,D=1,base=base)
+			pfABgR<-pABgammaR(A=As,B=Bs,T=T,ni=ni_restr,ab=ab,tab=tab_restr,met=method,itmp=itmp,wt=wt,D=1,base=base)
 			# test if Rcpp function returns the same value of the R function:
 			if (itmp==1) {pfABgR[1:(T-1),]<-0; pfABgR<-subset(pfABgR,select=grepl("^Dffclt",colnames(pfABgR)))}
 			cat("\n check second derivatives \n")
 			print(max(abs(pfABg-pfABgR)))
 			# the following computes numerical derivatives
-			tabl<-reshape(tab,direction="long",varying=modsnames,idvar="itms",times=1:T,v.names="gamma")
+			tabl<-reshape(tab_restr,direction="long",varying=modsnames,idvar="itms",times=1:T,v.names="gamma")
 			gamma<-tabl$gamma
 			names(gamma)<-rownames(tabl)
 			gamma<-gamma[!is.na(gamma)]
-			pSgamma<-jacobian(func=Sgamma,x=gamma,par=out$par,T=T,ni=ni,ab=ab,tabl=tabl,nummet=nummet,itmp=itmp,wt=wt,D=1,base=base,method="simple")
+			pSgamma<-jacobian(func=Sgamma,x=gamma,par=out$par,T=T,ni=ni_restr,ab=ab,tabl=tabl,nummet=nummet,itmp=itmp,wt=wt,D=1,base=base,method="simple")
 			colnames(pSgamma)<-names(gamma)
 			# test if the analytical second derivative is equal to the numerical second derivative
 			print(max(abs(pfABg[,colnames(pSgamma)]-pSgamma)))
@@ -501,13 +510,13 @@ multiec_irf<-function(mods,base,nq=30,method,se,start,eval.max=10000,trace=FALSE
 		
 		# standard errors of synthetic item parameters
 		
-		invT<-as.matrix(rowSums(!is.na(bj1T))) # -> u_j
+		invT<-as.matrix(rowSums(!is.na(bj1T_restr))) # -> u_j
 		invT<-invT[,c(rep(1,T))]
 		colnames(invT)<-modsnames
 
 		if (itmp>1) {
-			pajA<-as.matrix(aj1T)
-			for (t in 1:T) pajA[,t]<-aj1T[,t]/As[t]^2
+			pajA<-as.matrix(aj1T_restr)
+			for (t in 1:T) pajA[,t]<-aj1T_restr[,t]/As[t]^2
 			pajA[is.na(pajA)]<-0
 			pajA<- -pajA/invT
 			pajA<-as.matrix(pajA[,-base])
@@ -517,7 +526,7 @@ multiec_irf<-function(mods,base,nq=30,method,se,start,eval.max=10000,trace=FALSE
 			
 			colnames_spl<-strsplit(colnames(grAa),split=".",fixed=T)
 			colnames_no_t<-sapply(colnames_spl,FUN=function(x) paste(x[1],x[2],sep="."))
-			sel_sameitem<-outer(rownames(aj1T),colnames_no_t,FUN="==")
+			sel_sameitem<-outer(rownames(aj1T_restr),colnames_no_t,FUN="==")
 			
 			whicht<-as.numeric(as.character(sapply(colnames_spl,FUN=function(x) x[3])))
 			
@@ -540,7 +549,7 @@ multiec_irf<-function(mods,base,nq=30,method,se,start,eval.max=10000,trace=FALSE
 		
 		cat(" . \n")
 		
-		pbjA<-as.matrix(bj1T)
+		pbjA<-as.matrix(bj1T_restr)
 		pbjA[is.na(pbjA)]<-0
 		pbjA<- pbjA/invT
 		pbjA<-as.matrix(pbjA[,-base])
@@ -565,7 +574,7 @@ multiec_irf<-function(mods,base,nq=30,method,se,start,eval.max=10000,trace=FALSE
 
 		colnames_spl<-strsplit(colnames(grBb),split=".",fixed=T)
 		colnames_no_t<-sapply(colnames_spl,FUN=function(x) paste(x[1],x[2],sep="."))
-		sel_sameitem<-outer(rownames(bj1T),colnames_no_t,FUN="==")
+		sel_sameitem<-outer(rownames(bj1T_restr),colnames_no_t,FUN="==")
 		
 		whicht<-as.numeric(as.character(sapply(colnames_spl,FUN=function(x) x[3])))
 		
@@ -580,11 +589,11 @@ multiec_irf<-function(mods,base,nq=30,method,se,start,eval.max=10000,trace=FALSE
 		if (check) {
 			# the following computes numerical derivatives of the synthetic item parameters with respect to the item parameter estimates
 			cat("check derivatives of synthetic parameters \n")
-			tabl<-reshape(tab,direction="long",varying=modsnames,idvar="itms",times=1:T,v.names="gamma")
+			tabl<-reshape(tab_restr,direction="long",varying=modsnames,idvar="itms",times=1:T,v.names="gamma")
 			gamma<-tabl$gamma
 			names(gamma)<-rownames(tabl)
 			gamma<-gamma[!is.na(gamma)]
-			p_ab_gamma<-jacobian(func=gamma2ab,x=gamma,par=par,T=T,ni=ni,ab=ab,tabl=tabl,nummet=nummet,itmp=itmp,wt=wt,D=1,base=base,ini=c(As,Bs),method="simple")
+			p_ab_gamma<-jacobian(func=gamma2ab,x=gamma,par=par,T=T,ni=ni_restr,ab=ab,tabl=tabl,nummet=nummet,itmp=itmp,wt=wt,D=1,base=base,ini=c(As,Bs),method="simple")
 			colnames(p_ab_gamma)<-names(gamma)
 			# test if the analytical second derivative is equal to the numerical second derivative
 			if (itmp==1) pajgamma<-matrix(0,nrow(pbjgamma),ncol(pbjgamma))
