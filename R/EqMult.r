@@ -365,7 +365,7 @@ gamma2ab<-function(x,par,T,ni,ab,tabl,nummet,itmp,wt,D=D,base,ini){
 
 multiec_irf<-function(mods,base,nq=30,method,se,start,eval.max=10000,trace=FALSE,check=FALSE){
 	cat("Computation of equating coefficients  .  .  .  . \n")
-	if (class(start)=="mlteqc") start<-c(start$A[-1],start$B[-1])
+	if (inherits(start,"mlteqc")) start<-c(start$A[-1],start$B[-1])
 	itms<-c()
 	for (k in 1:length(mods)) itms<-c(itms,names(mods[[k]]$coef))
 	itms<-sort(unique(itms))

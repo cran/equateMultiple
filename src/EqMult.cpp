@@ -191,7 +191,7 @@ NumericMatrix hessRcpp(
 			minustok = 0;
 			for (k=s;k<T;k++) {
 				if (k>=base) minustok=1;
-				if ((s!=base) & (k!=base)) {
+				if ((s!=base) && (k!=base)) {
 					for (j=0;j<nq;j++) {
 						SPt=0;
 						SpPAs=0;
@@ -203,7 +203,7 @@ NumericMatrix hessRcpp(
 						SppPAsBk=0;
 						SppPBsBk=0;
 						for (i=0;i<ni;i++) {
-							if (aj1T(i,t)!=0) { //& !NumericMatrix::is_na(aj1T(i,s)) & !NumericMatrix::is_na(aj1T(i,k))) {
+							if (aj1T(i,t)!=0) { //&& !NumericMatrix::is_na(aj1T(i,s)) && !NumericMatrix::is_na(aj1T(i,k))) {
 								// first derivatives
 								if (s==t) {
 									saj1Ts=0;
@@ -235,11 +235,11 @@ NumericMatrix hessRcpp(
 								}
 
 								// second derivatives
-								if ((s==k) & (s==t))          ppPAsAk=(pPAs-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPAs)*p1PAs + pPLP(j,i)*D/Tj[i]*(-2*aj1T(i,s)/pow(A[s],3)*(bj[i]-B[s])+aj1T(i,s)/pow(A[s],2)*bj1T(i,s)/Tj[i]+aj1T(i,s)/pow(A[s],2)*bj1T(i,s)/Tj[i]); // second derivative of Pmjts with respect to AtAt (Equation 59)
-								if ((s==k) & (s!=t))          ppPAsAk=(pPAs-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPAs)*p1PAs + pPLP(j,i)*D/Tj[i]* (2*aj1T(i,s)/pow(A[s],3)*A[t]*ab[j]-2*aj1T(i,s)/pow(A[s],3)*(bj[i]-B[t])+aj1T(i,s)/pow(A[s],2)*bj1T(i,s)/Tj[i]+aj1T(i,s)/pow(A[s],2)*bj1T(i,s)/Tj[i]); // second derivative of Pmjts with respect to AsAs (Equation 63)
-								if ((s==t) & (k!=t))          ppPAsAk=(pPAk-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPAk)*p1PAs + pPLP(j,i)*D/Tj[i]*  (-aj1T(i,k)/pow(A[k],2)*ab[j]+aj1T(i,t)/pow(A[t],2)*bj1T(i,k)/Tj[i]+aj1T(i,k)/pow(A[k],2)*bj1T(i,s)/Tj[i]); //second derivative of Pmjts with respect to AtAk (Equation 60)
-								if ((s!=t) & (k==t))          ppPAsAk=(pPAk-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPAk)*p1PAs + pPLP(j,i)*D/Tj[i]*  (-aj1T(i,s)/pow(A[s],2)*ab[j]+aj1T(i,s)/pow(A[s],2)*bj1T(i,k)/Tj[i]+aj1T(i,k)/pow(A[k],2)*bj1T(i,s)/Tj[i]); //second derivative of Pmjts with respect to AsAt (Equation 64)
-								if ((s!=t) & (k!=t) & (s!=k)) ppPAsAk=(pPAk-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPAk)*p1PAs + pPLP(j,i)*D/Tj[i]*   (aj1T(i,s)/pow(A[s],2)*bj1T(i,k)/Tj[i]+aj1T(i,k)/pow(A[k],2)*bj1T(i,s)/Tj[i]); //second derivative of Pmjts with respect to AsAk  (Equation 67)
+								if ((s==k) && (s==t))          ppPAsAk=(pPAs-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPAs)*p1PAs + pPLP(j,i)*D/Tj[i]*(-2*aj1T(i,s)/pow(A[s],3)*(bj[i]-B[s])+aj1T(i,s)/pow(A[s],2)*bj1T(i,s)/Tj[i]+aj1T(i,s)/pow(A[s],2)*bj1T(i,s)/Tj[i]); // second derivative of Pmjts with respect to AtAt (Equation 59)
+								if ((s==k) && (s!=t))          ppPAsAk=(pPAs-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPAs)*p1PAs + pPLP(j,i)*D/Tj[i]* (2*aj1T(i,s)/pow(A[s],3)*A[t]*ab[j]-2*aj1T(i,s)/pow(A[s],3)*(bj[i]-B[t])+aj1T(i,s)/pow(A[s],2)*bj1T(i,s)/Tj[i]+aj1T(i,s)/pow(A[s],2)*bj1T(i,s)/Tj[i]); // second derivative of Pmjts with respect to AsAs (Equation 63)
+								if ((s==t) && (k!=t))          ppPAsAk=(pPAk-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPAk)*p1PAs + pPLP(j,i)*D/Tj[i]*  (-aj1T(i,k)/pow(A[k],2)*ab[j]+aj1T(i,t)/pow(A[t],2)*bj1T(i,k)/Tj[i]+aj1T(i,k)/pow(A[k],2)*bj1T(i,s)/Tj[i]); //second derivative of Pmjts with respect to AtAk (Equation 60)
+								if ((s!=t) && (k==t))          ppPAsAk=(pPAk-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPAk)*p1PAs + pPLP(j,i)*D/Tj[i]*  (-aj1T(i,s)/pow(A[s],2)*ab[j]+aj1T(i,s)/pow(A[s],2)*bj1T(i,k)/Tj[i]+aj1T(i,k)/pow(A[k],2)*bj1T(i,s)/Tj[i]); //second derivative of Pmjts with respect to AsAt (Equation 64)
+								if ((s!=t) && (k!=t) && (s!=k)) ppPAsAk=(pPAk-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPAk)*p1PAs + pPLP(j,i)*D/Tj[i]*   (aj1T(i,s)/pow(A[s],2)*bj1T(i,k)/Tj[i]+aj1T(i,k)/pow(A[k],2)*bj1T(i,s)/Tj[i]); //second derivative of Pmjts with respect to AsAk  (Equation 67)
 								
 								if (s==t) ppPBsBk= (pPBk-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPBk)*D*aj[i]*(1-1/Tj[i]*(bj1T(i,t)!=0)); //second derivative of Pmjts with respect to BtBk (Equation 54)
 								if (s!=t) ppPBsBk=-(pPBk-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPBk)*D*aj[i]/Tj[i]*(bj1T(i,s)!=0); //second derivative of Pmjts with respect to BsBk (Equation 57)
@@ -247,18 +247,18 @@ NumericMatrix hessRcpp(
 								if (s==t) ppPBsAk=  (pPAk-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPAk)*D*aj[i]*(1-1/Tj[i]*(bj1T(i,t)!=0))-pPLP(j,i)*D/Tj[i]*aj1T(i,k)/pow(A[k],2)*(1-1/Tj[i]*(bj1T(i,t)!=0)); //second derivative of Pmjts with respect to BtAk  (Equation 56)
 								if (s!=t) ppPBsAk=(-(pPAk-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPAk)*D*aj[i]/Tj[i]+pPLP(j,i)*D/Tj[i]*aj1T(i,k)/pow(A[k],2)/Tj[i])*(bj1T(i,s)!=0); //second derivative of Pmjts with respect to BsAk (Equation 58)
 								
-								if ((s==t) & (k==t)) ppPAsBk=(pPBk-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPBk)*p1PAs + pPLP(j,i)*D/Tj[i]*(aj1T(i,s)/pow(A[s],2)*(1/Tj[i]-1)); //second derivative of Pmjts with respect to AtBt (Equation 61)
-								if ((s==t) & (k!=t)) ppPAsBk=(pPBk-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPBk)*p1PAs + pPLP(j,i)*D/Tj[i]*(aj1T(i,s)/pow(A[s],2)/Tj[i])*(bj1T(i,k)!=0); //second derivative of Pmjts with respect to AtBk (Equation 62)
-								if ((s!=t) & (k==t)) ppPAsBk=(pPBk-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPBk)*p1PAs + pPLP(j,i)*D/Tj[i]*(aj1T(i,s)/pow(A[s],2)*(1/Tj[i]*(bj1T(i,k)!=0)-1)); //second derivative of Pmjts with respect to AsBk (Equation 66)
-								if ((s!=t) & (k!=t)) ppPAsBk=(pPBk-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPBk)*p1PAs + pPLP(j,i)*D/Tj[i]*(aj1T(i,s)/pow(A[s],2)/Tj[i])*(aj1T(i,k)!=0); //second derivative of Pmjts with respect to AsBk (Equation 65)
+								if ((s==t) && (k==t)) ppPAsBk=(pPBk-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPBk)*p1PAs + pPLP(j,i)*D/Tj[i]*(aj1T(i,s)/pow(A[s],2)*(1/Tj[i]-1)); //second derivative of Pmjts with respect to AtBt (Equation 61)
+								if ((s==t) && (k!=t)) ppPAsBk=(pPBk-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPBk)*p1PAs + pPLP(j,i)*D/Tj[i]*(aj1T(i,s)/pow(A[s],2)/Tj[i])*(bj1T(i,k)!=0); //second derivative of Pmjts with respect to AtBk (Equation 62)
+								if ((s!=t) && (k==t)) ppPAsBk=(pPBk-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPBk)*p1PAs + pPLP(j,i)*D/Tj[i]*(aj1T(i,s)/pow(A[s],2)*(1/Tj[i]*(bj1T(i,k)!=0)-1)); //second derivative of Pmjts with respect to AsBk (Equation 66)
+								if ((s!=t) && (k!=t)) ppPAsBk=(pPBk-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPBk)*p1PAs + pPLP(j,i)*D/Tj[i]*(aj1T(i,s)/pow(A[s],2)/Tj[i])*(aj1T(i,k)!=0); //second derivative of Pmjts with respect to AsBk (Equation 65)
 
-								if ((nummet==1) & (bj1T(i,t)!=0)) {
+								if ((nummet==1) && (bj1T(i,t)!=0)) {
 									f(s-minustos,k-minustok)+= (pPAs*pPAk -(Pt(j,i)-Pts(j,i))*ppPAsAk)*wt[j];
 									f(s+T-1-minustos,k-minustok)+= (pPBs*pPAk -(Pt(j,i)-Pts(j,i))*ppPBsAk)*wt[j];
 									f(s-minustos,k+T-1-minustok)+= (pPAs*pPBk -(Pt(j,i)-Pts(j,i))*ppPAsBk)*wt[j];
 									f(s+T-1-minustos,k+T-1-minustok)+=(pPBs*pPBk -(Pt(j,i)-Pts(j,i))*ppPBsBk)*wt[j];
 								}
-								if ((nummet==2) & (bj1T(i,t)!=0)) {
+								if ((nummet==2) && (bj1T(i,t)!=0)) {
 									SPt+=(Pt(j,i)-Pts(j,i));
 									SpPAs+=pPAs;
 									SpPAk+=pPAk;
@@ -377,7 +377,7 @@ NumericVector gradRcpp(
 					SpPAs=0;
 					SpPBs=0;
 					for (i=0;i<ni;i++) {
-						if (aj1T(i,t)!=0) { //& !NumericMatrix::is_na(aj1T(i,s)) & !NumericMatrix::is_na(aj1T(i,k))) {
+						if (aj1T(i,t)!=0) { //&& !NumericMatrix::is_na(aj1T(i,s)) && !NumericMatrix::is_na(aj1T(i,k))) {
 							// first derivatives
 							if (s==t) {
 								saj1Ts=0;
@@ -390,11 +390,11 @@ NumericVector gradRcpp(
 							if (s==t) pPBs=pPLP(j,i)*D*aj[i]*(1-1/Tj[i]*(bj1T(i,t)!=0)); //first derivative of Pmjts with respect to  Bs (Equations 50, 51)
 							if (s!=t) pPBs=-pPLP(j,i)*D*aj[i]/Tj[i]*(bj1T(i,s)!=0); //first derivative of Pmjts with respect to Bs (Equations 52, 53)
 
-							if ((nummet==1) & (bj1T(i,t)!=0)) {
+							if ((nummet==1) && (bj1T(i,t)!=0)) {
 								f[s-minusto]+=   -(Pt(j,i)-Pts(j,i))*pPAs*wt[j];
 								f[s+T-1-minusto]+= -(Pt(j,i)-Pts(j,i))*pPBs*wt[j];
 							}
-							if ((nummet==2) & (bj1T(i,t)!=0)) {
+							if ((nummet==2) && (bj1T(i,t)!=0)) {
 								SPt+=(Pt(j,i)-Pts(j,i));
 								SpPAs+=pPAs;
 								SpPBs+=pPBs;
@@ -507,7 +507,7 @@ List partialABgammaRcpp(
 		for (s=0;s<T;s++) { // s is the index of the equating coefficient
 			if (s!=base) {
 				for (i=0;i<ni;i++) {
-					// if (!NumericMatrix::is_na(aj1T(i,t)) & !NumericMatrix::is_na(aj1T(i,s))) {
+					// if (!NumericMatrix::is_na(aj1T(i,t)) && !NumericMatrix::is_na(aj1T(i,s))) {
 					if (aj1T(i,t)!=0) {
 						// first derivatives of Pts with respect to the equating coefficients
 						NumericMatrix::Column pPAs_col = pPAs( _, i);		
@@ -539,7 +539,7 @@ List partialABgammaRcpp(
 				for (k=0;k<T;k++) { // k is the index of the item parameter
 					for (j=0;j<nq;j++) {
 						for (i=0;i<ni;i++) {
-							if ((aj1T(i,t)!=0) & (aj1T(i,k)!=0)) {
+							if ((aj1T(i,t)!=0) && (aj1T(i,k)!=0)) {
 								// derivatives of Pt with respect to the item parameters
 								if (k==t) {
 									pPtgamma_a=  (Pt(j,i)-cj1T(i,t))*(1-(Pt(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*D*(ab[j]-bj1T(i,t)); // Equation (69)
@@ -562,20 +562,20 @@ List partialABgammaRcpp(
 								}
 								pPtsgamma_b= -pPLP(j,i)*D/Tj[i]*aj[i]*A[k]*(bj1T(i,k)!=0); // Equation (74)
 								// second derivatives of Pts with respect to the equating coefficients and the item parameters
-								if ((itmp==3) & (k==t)) ppPts_Ac = -pPAs(j,i)/(1-cj1T(i,t)); else ppPts_Ac=0; // Equation (81)
-								if ((itmp==3) & (k==t)) ppPts_Bc = -pPBs(j,i)/(1-cj1T(i,t)); else ppPts_Bc=0; // Equation (78)
+								if ((itmp==3) && (k==t)) ppPts_Ac = -pPAs(j,i)/(1-cj1T(i,t)); else ppPts_Ac=0; // Equation (81)
+								if ((itmp==3) && (k==t)) ppPts_Bc = -pPBs(j,i)/(1-cj1T(i,t)); else ppPts_Bc=0; // Equation (78)
 								
-								if ((s==t) & (k==t)) ppPts_Aa= (pPtsgamma_a-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_a)*p1PAs(j,i)+pPLP(j,i)*D/Tj[i]*((bj[i]-B[t])/pow(A[t],2)-bj1T(i,t)/(Tj[i]*A[t])); // Equation (82)
-								if ((s==t) & (k!=t)) ppPts_Aa= (pPtsgamma_a-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_a)*p1PAs(j,i)+pPLP(j,i)*D/Tj[i]*(ab[j]/A[k]-bj1T(i,t)/(Tj[i]*A[k])); // Equation (83)
-								if ((s!=t) & (k==s)) ppPts_Aa= (pPtsgamma_a-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_a)*p1PAs(j,i)+pPLP(j,i)*D/Tj[i]*(-ab[j]*A[t]/pow(A[s],2)+(bj[i]-B[t])/pow(A[s],2)-bj1T(i,s)/(Tj[i]*A[s])); // Equation (87)
-								if ((s!=t) & (k!=s)) ppPts_Aa= (pPtsgamma_a-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_a)*p1PAs(j,i)+pPLP(j,i)*D/Tj[i]*(-bj1T(i,s)/(Tj[i]*A[k]))*(bj1T(i,s)!=0); // Equation (88)
+								if ((s==t) && (k==t)) ppPts_Aa= (pPtsgamma_a-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_a)*p1PAs(j,i)+pPLP(j,i)*D/Tj[i]*((bj[i]-B[t])/pow(A[t],2)-bj1T(i,t)/(Tj[i]*A[t])); // Equation (82)
+								if ((s==t) && (k!=t)) ppPts_Aa= (pPtsgamma_a-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_a)*p1PAs(j,i)+pPLP(j,i)*D/Tj[i]*(ab[j]/A[k]-bj1T(i,t)/(Tj[i]*A[k])); // Equation (83)
+								if ((s!=t) && (k==s)) ppPts_Aa= (pPtsgamma_a-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_a)*p1PAs(j,i)+pPLP(j,i)*D/Tj[i]*(-ab[j]*A[t]/pow(A[s],2)+(bj[i]-B[t])/pow(A[s],2)-bj1T(i,s)/(Tj[i]*A[s])); // Equation (87)
+								if ((s!=t) && (k!=s)) ppPts_Aa= (pPtsgamma_a-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_a)*p1PAs(j,i)+pPLP(j,i)*D/Tj[i]*(-bj1T(i,s)/(Tj[i]*A[k]))*(bj1T(i,s)!=0); // Equation (88)
 								if (s==t) ppPts_Ba=  (pPtsgamma_a-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_a)*D*aj[i]*(1-1/Tj[i])+pPLP(j,i)*D/Tj[i]/A[k]*(1-1/Tj[i]); // Equation (76)
 								if (s!=t) ppPts_Ba= -(pPtsgamma_a-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_a)*D*aj[i]/Tj[i]*(bj1T(i,s)!=0)-pPLP(j,i)*D/Tj[i]/A[k]/Tj[i]*(bj1T(i,s)!=0); // Equation (79)
 								
-								if ((s==t) & (k==t)) ppPts_Ab=(pPtsgamma_b-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_b)*p1PAs(j,i)+pPLP(j,i)*D/Tj[i]*(aj1T(i,t)/(Tj[i]*A[t])-aj[i]);
-								if ((s==t) & (k!=t)) ppPts_Ab=(pPtsgamma_b-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_b)*p1PAs(j,i)+pPLP(j,i)*D/Tj[i]*(aj1T(i,t)/(Tj[i]*pow(A[t],2))*A[k]);
-								if ((s!=t) & (k==s)) ppPts_Ab=(pPtsgamma_b-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_b)*p1PAs(j,i)+pPLP(j,i)*D/Tj[i]*(aj1T(i,s)/(Tj[i]*A[s])-aj[i])*(aj1T(i,s)!=0);
-								if ((s!=t) & (k!=s)) ppPts_Ab=(pPtsgamma_b-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_b)*p1PAs(j,i)+pPLP(j,i)*D/Tj[i]*(aj1T(i,s)/(Tj[i]*pow(A[s],2))*A[k])*(aj1T(i,s)!=0);
+								if ((s==t) && (k==t)) ppPts_Ab=(pPtsgamma_b-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_b)*p1PAs(j,i)+pPLP(j,i)*D/Tj[i]*(aj1T(i,t)/(Tj[i]*A[t])-aj[i]);
+								if ((s==t) && (k!=t)) ppPts_Ab=(pPtsgamma_b-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_b)*p1PAs(j,i)+pPLP(j,i)*D/Tj[i]*(aj1T(i,t)/(Tj[i]*pow(A[t],2))*A[k]);
+								if ((s!=t) && (k==s)) ppPts_Ab=(pPtsgamma_b-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_b)*p1PAs(j,i)+pPLP(j,i)*D/Tj[i]*(aj1T(i,s)/(Tj[i]*A[s])-aj[i])*(aj1T(i,s)!=0);
+								if ((s!=t) && (k!=s)) ppPts_Ab=(pPtsgamma_b-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_b)*p1PAs(j,i)+pPLP(j,i)*D/Tj[i]*(aj1T(i,s)/(Tj[i]*pow(A[s],2))*A[k])*(aj1T(i,s)!=0);
 								if (s==t) ppPts_Bb=  (pPtsgamma_b-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_b)*D*aj[i]*(1-1/Tj[i]);
 								if (s!=t) ppPts_Bb= -(pPtsgamma_b-2*((Pts(j,i)-cj1T(i,t))/(1-cj1T(i,t)))*pPtsgamma_b)*D*aj[i]/Tj[i]*(bj1T(i,s)!=0);
 								co=posnomi(i,k);

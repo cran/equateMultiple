@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // objectivefzRcpp
 double objectivefzRcpp(NumericVector par, int T, NumericVector ab, NumericVector wt, NumericMatrix aj1T, NumericMatrix bj1T, NumericMatrix cj1T, int nummet, int itmp, double D, int base);
 RcppExport SEXP _equateMultiple_objectivefzRcpp(SEXP parSEXP, SEXP TSEXP, SEXP abSEXP, SEXP wtSEXP, SEXP aj1TSEXP, SEXP bj1TSEXP, SEXP cj1TSEXP, SEXP nummetSEXP, SEXP itmpSEXP, SEXP DSEXP, SEXP baseSEXP) {
