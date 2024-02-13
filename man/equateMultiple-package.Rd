@@ -1,6 +1,6 @@
-\name{EquateMultiple-package}
-\alias{EquateMultiple-package}
-\alias{EquateMultiple}
+\name{equateMultiple-package}
+\alias{equateMultiple-package}
+\alias{equateMultiple}
 \docType{package}
 \title{Equating of Multiple Forms}
 \description{The \bold{EquateMultiple} package implements IRT-based methods to

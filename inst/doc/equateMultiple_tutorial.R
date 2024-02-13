@@ -2,7 +2,7 @@
 library("equateMultiple")
 data("data2pl", package = "equateIRT")
 
-## ---- message=FALSE-----------------------------------------------------------
+## ----message=FALSE------------------------------------------------------------
 library("ltm")
 m1 <- ltm(data2pl[[1]] ~ z1)
 m2 <- ltm(data2pl[[2]] ~ z1)
