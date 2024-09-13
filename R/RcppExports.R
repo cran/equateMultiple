@@ -25,3 +25,11 @@ ipfRcpp <- function(aj1T, base, eps) {
     .Call(`_equateMultiple_ipfRcpp`, aj1T, base, eps)
 }
 
+profLikRcpp <- function(par, coef, t, X_list, itmvar, numforms, notbase, DffcltNum, DscrmnNum, pos) {
+    .Call(`_equateMultiple_profLikRcpp`, par, coef, t, X_list, itmvar, numforms, notbase, DffcltNum, DscrmnNum, pos)
+}
+
+profLikRcpp_1PL <- function(par, coef, t, X_list, itmvar, numforms, notbase, pos) {
+    .Call(`_equateMultiple_profLikRcpp_1PL`, par, coef, t, X_list, itmvar, numforms, notbase, pos)
+}
+

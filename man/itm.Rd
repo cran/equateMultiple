@@ -5,7 +5,7 @@
 }
 \description{
 	\code{itm} is a generic function which extracts a data frame containing the
-	item parameters of multiple forms being equated in the original scale and 
+	item parameters of multiple forms in the original scale and 
 	the item parameters converted to the scale of the base form.
 }
 \usage{

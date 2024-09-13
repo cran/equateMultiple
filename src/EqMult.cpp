@@ -1,6 +1,7 @@
-// [[Rcpp::depends(RcppArmadillo)]]
+// [[Rcpp::depends(RcppArmadillo, RcppDist)]]
 
 #include <RcppArmadillo.h>
+#include <RcppDist.h>
 using namespace Rcpp;
 
 
@@ -57,9 +58,9 @@ double objectivefzRcpp(
 	//B = rep(0,T);
 	IntegerVector v1 = seq(0,T-1);
 	IntegerVector v2 = seq(0,T-2);
-	A[v1!=base] = par[v2];
+	if(itmp>1) A[v1!=base] = par[v2];
 	B[v1!=base] = par[v2+T-1];
-	if (itmp==1) A = rep(1,T);
+	//if (itmp==1) A = rep(1,T);
 	NumericMatrix aj1Ts = clone(aj1T);
 	NumericMatrix bj1Ts = clone(bj1T);
 	for (t=0;t<T;t++) {
@@ -685,4 +686,161 @@ List ipfRcpp(NumericMatrix aj1T, int base, double eps) {
 	out[1]=aj;
 	return(out);
 }
+
+
+
+// [[Rcpp::export]]
+double profLikRcpp(arma::vec par, arma::vec coef, arma::uvec t, List X_list,
+                   List itmvar, int numforms, arma::uvec notbase,
+                   arma::uvec DffcltNum, arma::uvec DscrmnNum, arma::uvec pos)
+{
+  int f;
+  arma::vec A(numforms, arma::fill::ones);
+  arma::vec B(numforms, arma::fill::zeros);
+  arma::vec Ashort = par.subvec(0,numforms-2);
+  arma::vec Bshort = par.subvec(numforms-1,2*numforms-3);
+  A.elem(notbase) = Ashort; 
+  B.elem(notbase) = Bshort; 
+  arma::vec Along=A.elem(t);
+  arma::vec Blong=B.elem(t);
+  
+  arma::vec Y=coef;
+  Y.elem(DffcltNum) = Y.elem(DffcltNum) % Along.elem(DffcltNum) + Blong.elem(DffcltNum) ;
+  Y.elem(DscrmnNum) = Y.elem(DscrmnNum) / Along.elem(DscrmnNum) ;
+  List Y_list(numforms);
+  for (f=0;f<numforms;f++)
+  {
+    arma::uvec sel=find(t==f);
+    arma::vec Y_f = Y.elem(sel);
+    Y_list(f)=Y_f;
+  }
+  List omega(numforms); // = clone(itmvar);
+  for (f=0;f<numforms;f++)
+  {
+    arma::mat omega_f = itmvar(f);
+    int nr = omega_f.n_rows;
+    omega_f.submat(0,0,nr/2-1,nr/2-1) *= pow(A(f),2); //difficulties are in the first places
+    omega_f.submat(nr/2,nr/2,nr-1,nr-1) /= pow(A(f),2); //discriminations are in the last places
+    omega(f) = omega_f;
+  }
+  List Vcholinv(numforms);
+  bool ok1=false, ok2=false;
+  for (f=0;f<numforms;f++)
+  {
+    arma::mat omega_f=omega(f);
+    arma::mat Vchol_f;
+    ok1 = arma::chol(Vchol_f,omega_f);
+    arma::mat C;
+    ok2 = inv(C,trimatu(Vchol_f));
+    Vcholinv(f) = C;
+  }
+  double out=0;
+  if ((ok1==true) && (ok2==true))
+  {
+    arma::mat t_V_chol_inv_X(0,0);
+    arma::mat t_V_chol_inv_Y(0,0);
+    for (f=0;f<numforms;f++)
+    {
+      arma::mat Vcholinv_f = Vcholinv(f);
+      arma::mat X_list_f = X_list(f);
+      arma::mat t_V_chol_inv_X_f = Vcholinv_f.t() * X_list_f;
+      t_V_chol_inv_X=join_cols(t_V_chol_inv_X,t_V_chol_inv_X_f);
+      arma::mat Y_list_f = Y_list(f);
+      arma::mat t_V_chol_inv_Y_f = Vcholinv_f.t() * Y_list_f;
+      t_V_chol_inv_Y=join_cols(t_V_chol_inv_Y,t_V_chol_inv_Y_f);
+    }
+    
+    arma::mat tX_V_chol_inv_t_V_chol_inv_X = t_V_chol_inv_X.t() * t_V_chol_inv_X;
+    arma::mat tX_V_chol_inv_t_V_chol_inv_Y = t_V_chol_inv_X.t() * t_V_chol_inv_Y;
+    arma::mat tX_V_chol_inv_t_V_chol_inv_X_inv = tX_V_chol_inv_t_V_chol_inv_X.i();
+    arma::vec beta = tX_V_chol_inv_t_V_chol_inv_X_inv * tX_V_chol_inv_t_V_chol_inv_Y;
+    
+    beta = beta.elem(pos);
+    
+    arma::vec mean=beta;
+    mean.elem(DffcltNum) = (mean.elem(DffcltNum) - Blong.elem(DffcltNum)) / Along.elem(DffcltNum) ;
+    
+    mean.elem(DscrmnNum) = mean.elem(DscrmnNum) % Along.elem(DscrmnNum) ;
+    
+    out=0;
+    for (f=0;f<numforms;f++)
+    {
+      arma::uvec sel=find(t==f);
+      arma::mat coef_f=coef.elem(sel);
+      arma::vec mean_f=mean.elem(sel);
+      arma::mat itmvar_f=itmvar(f);
+      arma::vec logdensity=dmvnorm(coef_f.t(),mean_f,itmvar_f,true);
+      out += accu(logdensity);
+    }
+  }
+  else out = -10000000000;
+  return -out;
+}
+
+
+
+// [[Rcpp::export]]
+double profLikRcpp_1PL(arma::vec par, arma::vec coef, arma::uvec t, List X_list,
+                   List itmvar, int numforms, arma::uvec notbase,
+                   arma::uvec pos)
+{
+  int f;
+  arma::vec B(numforms, arma::fill::zeros);
+  B.elem(notbase) = par; 
+  arma::vec Blong=B.elem(t);
+  
+  arma::vec Y=coef;
+  Y += Blong;
+  List Y_list(numforms);
+  for (f=0;f<numforms;f++)
+  {
+    arma::uvec sel=find(t==f);
+    arma::vec Y_f = Y.elem(sel);
+    Y_list(f)=Y_f;
+  }
+  List Vcholinv(numforms);
+  for (f=0;f<numforms;f++)
+  {
+    arma::mat omega_f=itmvar(f);
+    arma::mat Vchol_f= arma::chol(omega_f);
+    Vcholinv(f) = inv(trimatu(Vchol_f));
+  }
+  arma::mat t_V_chol_inv_X(0,0);
+  arma::mat t_V_chol_inv_Y(0,0);
+  for (f=0;f<numforms;f++)
+  {
+    arma::mat Vcholinv_f = Vcholinv(f);
+    arma::mat X_list_f = X_list(f);
+    arma::mat t_V_chol_inv_X_f = Vcholinv_f.t() * X_list_f;
+    t_V_chol_inv_X=join_cols(t_V_chol_inv_X,t_V_chol_inv_X_f);
+    arma::mat Y_list_f = Y_list(f);
+    arma::mat t_V_chol_inv_Y_f = Vcholinv_f.t() * Y_list_f;
+    t_V_chol_inv_Y=join_cols(t_V_chol_inv_Y,t_V_chol_inv_Y_f);
+  }
+  
+  arma::mat tX_V_chol_inv_t_V_chol_inv_X = t_V_chol_inv_X.t() * t_V_chol_inv_X;
+  arma::mat tX_V_chol_inv_t_V_chol_inv_Y = t_V_chol_inv_X.t() * t_V_chol_inv_Y;
+  arma::mat tX_V_chol_inv_t_V_chol_inv_X_inv = tX_V_chol_inv_t_V_chol_inv_X.i();
+  arma::vec beta = tX_V_chol_inv_t_V_chol_inv_X_inv * tX_V_chol_inv_t_V_chol_inv_Y;
+  
+  beta = beta.elem(pos);
+  
+  arma::vec mean = beta - Blong;
+
+  double out=0;
+  for (f=0;f<numforms;f++)
+  {
+    arma::uvec sel=find(t==f);
+    arma::mat coef_f=coef.elem(sel);
+    arma::vec mean_f=mean.elem(sel);
+    arma::mat itmvar_f=itmvar(f);
+    arma::vec logdensity=dmvnorm(coef_f.t(),mean_f,itmvar_f,true);
+    out += accu(logdensity);
+  }
+  return -out;
+}
+
+
+
+
 

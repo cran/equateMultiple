@@ -121,6 +121,44 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// profLikRcpp
+double profLikRcpp(arma::vec par, arma::vec coef, arma::uvec t, List X_list, List itmvar, int numforms, arma::uvec notbase, arma::uvec DffcltNum, arma::uvec DscrmnNum, arma::uvec pos);
+RcppExport SEXP _equateMultiple_profLikRcpp(SEXP parSEXP, SEXP coefSEXP, SEXP tSEXP, SEXP X_listSEXP, SEXP itmvarSEXP, SEXP numformsSEXP, SEXP notbaseSEXP, SEXP DffcltNumSEXP, SEXP DscrmnNumSEXP, SEXP posSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type par(parSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type coef(coefSEXP);
+    Rcpp::traits::input_parameter< arma::uvec >::type t(tSEXP);
+    Rcpp::traits::input_parameter< List >::type X_list(X_listSEXP);
+    Rcpp::traits::input_parameter< List >::type itmvar(itmvarSEXP);
+    Rcpp::traits::input_parameter< int >::type numforms(numformsSEXP);
+    Rcpp::traits::input_parameter< arma::uvec >::type notbase(notbaseSEXP);
+    Rcpp::traits::input_parameter< arma::uvec >::type DffcltNum(DffcltNumSEXP);
+    Rcpp::traits::input_parameter< arma::uvec >::type DscrmnNum(DscrmnNumSEXP);
+    Rcpp::traits::input_parameter< arma::uvec >::type pos(posSEXP);
+    rcpp_result_gen = Rcpp::wrap(profLikRcpp(par, coef, t, X_list, itmvar, numforms, notbase, DffcltNum, DscrmnNum, pos));
+    return rcpp_result_gen;
+END_RCPP
+}
+// profLikRcpp_1PL
+double profLikRcpp_1PL(arma::vec par, arma::vec coef, arma::uvec t, List X_list, List itmvar, int numforms, arma::uvec notbase, arma::uvec pos);
+RcppExport SEXP _equateMultiple_profLikRcpp_1PL(SEXP parSEXP, SEXP coefSEXP, SEXP tSEXP, SEXP X_listSEXP, SEXP itmvarSEXP, SEXP numformsSEXP, SEXP notbaseSEXP, SEXP posSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type par(parSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type coef(coefSEXP);
+    Rcpp::traits::input_parameter< arma::uvec >::type t(tSEXP);
+    Rcpp::traits::input_parameter< List >::type X_list(X_listSEXP);
+    Rcpp::traits::input_parameter< List >::type itmvar(itmvarSEXP);
+    Rcpp::traits::input_parameter< int >::type numforms(numformsSEXP);
+    Rcpp::traits::input_parameter< arma::uvec >::type notbase(notbaseSEXP);
+    Rcpp::traits::input_parameter< arma::uvec >::type pos(posSEXP);
+    rcpp_result_gen = Rcpp::wrap(profLikRcpp_1PL(par, coef, t, X_list, itmvar, numforms, notbase, pos));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_equateMultiple_objectivefzRcpp", (DL_FUNC) &_equateMultiple_objectivefzRcpp, 11},
@@ -129,6 +167,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_equateMultiple_partialABgammaRcpp", (DL_FUNC) &_equateMultiple_partialABgammaRcpp, 13},
     {"_equateMultiple_VarExtRcpp", (DL_FUNC) &_equateMultiple_VarExtRcpp, 1},
     {"_equateMultiple_ipfRcpp", (DL_FUNC) &_equateMultiple_ipfRcpp, 3},
+    {"_equateMultiple_profLikRcpp", (DL_FUNC) &_equateMultiple_profLikRcpp, 10},
+    {"_equateMultiple_profLikRcpp_1PL", (DL_FUNC) &_equateMultiple_profLikRcpp_1PL, 8},
     {NULL, NULL, 0}
 };
 

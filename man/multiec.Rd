@@ -6,10 +6,10 @@
 \description{Calculates the equating coefficients between multiple forms.}
 \usage{
 multiec(mods, base = 1, method = "mean-mean", se = TRUE, nq = 30, start = NULL, 
-	eval.max = 100000)
+	iter.max = 100000, obsinf = TRUE)
 }
 \arguments{
-  \item{mods}{an object of the class \code{\link{modIRT}} containing item parameter
+  \item{mods}{an object of the class \code{\link[equateIRT]{modIRT}} containing item parameter
   coefficients and their covariance matrix of the forms to be equated.
 }
 \item{base}{
@@ -17,8 +17,7 @@ multiec(mods, base = 1, method = "mean-mean", se = TRUE, nq = 30, start = NULL,
 }
 \item{method}{
   the method used to compute the equating coefficients.
-  This should be one of "\code{mean-mean}", "\code{mean-gmean}", "\code{irf}" or "\code{trf}"
-  (see details).
+  This should be one of "\code{mean-mean}", "\code{mean-gmean}", "\code{irf}",  "\code{trf}" or "\code{lik}" (see details).
 }
 \item{se}{
   logical; if \code{TRUE} the standard errors of the equating coefficients and
@@ -31,19 +30,25 @@ multiec(mods, base = 1, method = "mean-mean", se = TRUE, nq = 30, start = NULL,
 \item{start}{
   initial values. This can be a vector containing the A and B equating coefficients excluding
   the base form, or an object of class \code{mlteqc} returned by function \code{multiec}.
-  Used only with methods "\code{irf}" and "\code{trf}".
+  Used only with methods "\code{irf}", "\code{trf}" and "\code{lik}".
 }
-\item{eval.max}{
-  maximum number of evaluations of the objective function allowed.
-  Used only with methods "\code{irf}" and "\code{trf}".
+\item{iter.max}{
+  maximum number of iterations allowed.
+  Used only with methods "\code{irf}", "\code{trf}" and "\code{lik}".
+}
+\item{obsinf}{
+  logical; if \code{TRUE} the standard errors are computed using the observed 
+  information matrix. Used only with method "\code{lik}",
+  see Battauz and  Leoncio (2023).
 }
 }
 \details{
   The methods implemented for the computation of the multiple equating coefficients are
   the multiple mean-mean method ("\code{mean-mean}"),
   the multiple mean-geometric mean method ("\code{mean-gmean}"),
-  the multiple item response function method ("\code{irf}") and
-  the multiple test response function method ("\code{trf}").
+  the multiple item response function method ("\code{irf}"), 
+  the multiple test response function method ("\code{trf}"),
+  and likelihood-based equating ("\code{lik}").
 
 }
 \value{
@@ -69,22 +74,28 @@ multiec(mods, base = 1, method = "mean-mean", se = TRUE, nq = 30, start = NULL,
   \item{method}{the equating method used.}
   \item{basename}{the name of the base form.}
   \item{convergence}{An integer code. 0 indicates successful convergence.
-  Returned only with methods "\code{irf}" and "\code{trf}".}
+  Returned only with methods "\code{irf}", "\code{trf}" and "\code{lik}".}
 }
 \references{
 	Battauz, M. (2017). Multiple equating of separate IRT calibrations.
 	\emph{Psychometrika}, \bold{82}, 610--636.
+	
+  Battauz, M., Leoncio, W. (2023). 
+	A Likelihood Approach to Item Response Theory Equating of Multiple Forms
+	\emph{Applied Psychological Measurement}, \bold{47}, 200-220.
+	doi: 10.1177/01466216231151702.
 	
   Haberman, S. J. (2009). Linking parameter estimates derived from an
   item response model through separate calibrations.
   ETS Research Report Series, 2009, i-9.
 }
 \author{
-  Michela Battauz
+  Michela Battauz,
+  Waldir Leoncio [ctb]
 }
 
 \seealso{
-  \code{\link{modIRT}}, \code{\link{score.mlteqc}}
+  \code{\link{score.mlteqc}}, \code{\link[equateIRT]{modIRT}}
 }
 \examples{
 data(est2pl)
@@ -112,5 +123,9 @@ summary(eqIRF)
 # Estimation of the equating coefficients with the multiple test response function method
 eqTRF <- multiec(mods = mods, base = 1, method = "trf")
 summary(eqTRF)
+
+# Estimation of the equating coefficients with the likelihood-based method
+eqLIK <- multiec(mods = mods, base = 1, method = "lik")
+summary(eqLIK)
 }
 
