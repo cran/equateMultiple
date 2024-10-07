@@ -17,10 +17,6 @@ partialABgammaRcpp <- function(par, T, ab, wt, aj1T, bj1T, cj1T, nummet, itmp, D
     .Call(`_equateMultiple_partialABgammaRcpp`, par, T, ab, wt, aj1T, bj1T, cj1T, nummet, itmp, D, base, nb, posnomi)
 }
 
-VarExtRcpp <- function(x) {
-    .Call(`_equateMultiple_VarExtRcpp`, x)
-}
-
 ipfRcpp <- function(aj1T, base, eps) {
     .Call(`_equateMultiple_ipfRcpp`, aj1T, base, eps)
 }

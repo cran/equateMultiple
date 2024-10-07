@@ -1,7 +1,7 @@
 Package: equateMultiple
 Type: Package
 Title: Equating of Multiple Forms
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: c(
    person("Michela", "Battauz", role = c("aut", "cre"), email = "michela.battauz@uniud.it"),
    person("Waldir", "Leoncio", role = "ctb"))
@@ -12,11 +12,11 @@ Description: Equating of multiple forms using Item Response Theory (IRT) methods
 License: GPL-3
 Imports: stats, graphics, numDeriv, statmod, Rcpp (>= 1.0.7), Matrix,
         mvtnorm, data.table
-Depends: equateIRT(>= 2.5.0), R(>= 3.5.0)
+Depends: equateIRT(>= 2.5.1), R(>= 3.5.0)
 LinkingTo: Rcpp, RcppArmadillo, RcppDist
 Suggests: knitr, rmarkdown, ltm, mirt
 VignetteBuilder: knitr
 NeedsCompilation: yes
-Packaged: 2024-09-13 10:29:51 UTC; pc
+Packaged: 2024-10-07 08:21:26 UTC; Battauz
 Repository: CRAN
-Date/Publication: 2024-09-13 10:50:02 UTC
+Date/Publication: 2024-10-07 08:40:05 UTC

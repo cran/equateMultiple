@@ -6,7 +6,7 @@
 \description{Calculates the equating coefficients between multiple forms.}
 \usage{
 multiec(mods, base = 1, method = "mean-mean", se = TRUE, nq = 30, start = NULL, 
-	iter.max = 100000, obsinf = TRUE)
+	iter.max = 100000, obsinf = TRUE, trace = TRUE)
 }
 \arguments{
   \item{mods}{an object of the class \code{\link[equateIRT]{modIRT}} containing item parameter
@@ -21,7 +21,7 @@ multiec(mods, base = 1, method = "mean-mean", se = TRUE, nq = 30, start = NULL,
 }
 \item{se}{
   logical; if \code{TRUE} the standard errors of the equating coefficients and
-  the synthetic item parameters are computed.
+  the item parameters on a common scale are computed.
 }
 \item{nq}{
   number of quadrature points used for the Gauss-Hermite quadrature for
@@ -41,6 +41,9 @@ multiec(mods, base = 1, method = "mean-mean", se = TRUE, nq = 30, start = NULL,
   information matrix. Used only with method "\code{lik}",
   see Battauz and  Leoncio (2023).
 }
+\item{trace}{
+  logical; if \code{TRUE} tracing information is produced.
+}
 }
 \details{
   The methods implemented for the computation of the multiple equating coefficients are
@@ -58,15 +61,15 @@ multiec(mods, base = 1, method = "mean-mean", se = TRUE, nq = 30, start = NULL,
   \item{se.A}{standard errors of A equating coefficients.}
   \item{se.B}{standard errors of B equating coefficients.}
   \item{varAB}{covariance matrix of equating coefficients.}
-  \item{as}{synthetic discrimination parameters \eqn{\hat a_j^*}.}
-  \item{bs}{synthetic difficulty parameters \eqn{\hat b_j^*}.}
-  \item{se.as}{standard errors of synthetic discrimination parameters.}
-  \item{se.bs}{standard errors of synthetic difficulty parameters.}
-  \item{tab}{data frame containing item names (\code{Item}), 
-	item parameters of all the forms (e.g. \code{T1}, \dots, \code{T3}), 
-	and item parameters of all the forms converted 
+  \item{as}{discrimination parameters on a common scale \eqn{\hat a_j^*}.}
+  \item{bs}{difficulty parameters on a common scale \eqn{\hat b_j^*}.}
+  \item{se.as}{standard errors of discrimination parameters on a common scale.}
+  \item{se.bs}{standard errors of difficulty parameters on a common scale.}
+  \item{tab}{data frame containing item parameter names (\code{Item}), 
+	item parameter estimates of all the forms (e.g. \code{T1}, \dots, \code{T3}), 
+	and item parameter estimates of all the forms converted 
 	in the scale of the base form (e.g. \code{T3.as.T1}).}
-  \item{varFull}{list of covariance matrices of the item parameters 
+  \item{varFull}{list of covariance matrices of the item parameter estimates 
   of every form.}
   \item{partial}{partial derivatives of equating coefficients 
   with respect to the item parameters.}

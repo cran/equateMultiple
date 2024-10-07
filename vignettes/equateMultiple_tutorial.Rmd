@@ -18,8 +18,8 @@ vignette: >
 The equateMultiple package computes:
 
 * __Equating coefficients__ between __multiple forms__.
-* __Synthetic item parameters__ (sort of mean of the item parameter estimates from different forms).
-* __Standard errors__ of the equating coefficients and the synthetic item parameters.
+* __Item parameter estimates on a common scale__ (based on the item parameter estimates from different forms).
+* __Standard errors__ of the equating coefficients and the item parameter estimates on a common scale.
 
 # Data preparation
 
@@ -120,19 +120,15 @@ summary(eqLIK)
 ```
 
 
-# Synthetic item parameters
+# Item parameter estimates on a common scale
 
-The synthetic item parameters are an estimate of the item parameters on the scale
-of the base form, obtained using all estimates available for the same item parameter
-across all the forms.
-The synthetic item parameters and their standard errors can be
-extracted as follows (using the multiple item response function method).
+The package computes estimates of the item parameters on the scale
+of the base form, obtained using all estimates available for the same item
+across all the forms. Their standard errors are also computed.
+They can be extracted as follows (using the multiple item response function method).
 
 ```{r}
-eqIRF$as
-eqIRF$bs
-eqIRF$se.as
-eqIRF$se.bs
+item.common(eqIRF)
 ```
 
 # Equated scores

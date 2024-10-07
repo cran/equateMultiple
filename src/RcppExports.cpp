@@ -97,17 +97,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// VarExtRcpp
-arma::mat VarExtRcpp(List x);
-RcppExport SEXP _equateMultiple_VarExtRcpp(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(VarExtRcpp(x));
-    return rcpp_result_gen;
-END_RCPP
-}
 // ipfRcpp
 List ipfRcpp(NumericMatrix aj1T, int base, double eps);
 RcppExport SEXP _equateMultiple_ipfRcpp(SEXP aj1TSEXP, SEXP baseSEXP, SEXP epsSEXP) {
@@ -165,7 +154,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_equateMultiple_hessRcpp", (DL_FUNC) &_equateMultiple_hessRcpp, 11},
     {"_equateMultiple_gradRcpp", (DL_FUNC) &_equateMultiple_gradRcpp, 11},
     {"_equateMultiple_partialABgammaRcpp", (DL_FUNC) &_equateMultiple_partialABgammaRcpp, 13},
-    {"_equateMultiple_VarExtRcpp", (DL_FUNC) &_equateMultiple_VarExtRcpp, 1},
     {"_equateMultiple_ipfRcpp", (DL_FUNC) &_equateMultiple_ipfRcpp, 3},
     {"_equateMultiple_profLikRcpp", (DL_FUNC) &_equateMultiple_profLikRcpp, 10},
     {"_equateMultiple_profLikRcpp_1PL", (DL_FUNC) &_equateMultiple_profLikRcpp_1PL, 8},

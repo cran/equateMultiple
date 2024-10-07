@@ -49,10 +49,7 @@ eqLIK <- multiec(mods = mods, method = "lik", base = 5)
 summary(eqLIK)
 
 ## -----------------------------------------------------------------------------
-eqIRF$as
-eqIRF$bs
-eqIRF$se.as
-eqIRF$se.bs
+item.common(eqIRF)
 
 ## -----------------------------------------------------------------------------
 scTSE<-score(eqIRF)

@@ -18,8 +18,8 @@ item parameters and the ability values to the scale of the base form.
 The methods implemented are: multiple mean-geometric mean (Haberman, 2009),
 multiple mean-mean, multiple item response function, multiple test
 response function (Battauz, 2017), and likelihood-based linking (Battauz and Leoncio, 2023).
-The function provides the equating coefficients, the synthetic item parameters
-and the standard errors of the equating coefficients and the synthetic item parameters.
+The function provides the equating coefficients, estimates of item parameters on a common scale
+and the standard errors of the equating coefficients and item parameters on a common scale.
 Equated scores can be computed using true score equating and 
 observed score equating methods. Standard errors of equated scores
 are also provided.

@@ -1332,7 +1332,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -1585,10 +1585,10 @@ Tutorial</h1>
 <ul>
 <li><strong>Equating coefficients</strong> between <strong>multiple
 forms</strong>.</li>
-<li><strong>Synthetic item parameters</strong> (sort of mean of the item
-parameter estimates from different forms).</li>
+<li><strong>Item parameter estimates on a common scale</strong> (based
+on the item parameter estimates from different forms).</li>
 <li><strong>Standard errors</strong> of the equating coefficients and
-the synthetic item parameters.</li>
+the item parameter estimates on a common scale.</li>
 </ul>
 </div>
 <div id="data-preparation" class="section level1" number="2">
@@ -1754,94 +1754,123 @@ estimates are converted to the scale of the base form.</p>
 ##   B test4 -0.12318 0.021301
 ##   B test5  0.00000 0.000000</code></pre>
 </div>
-<div id="synthetic-item-parameters" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Synthetic item
-parameters</h1>
-<p>The synthetic item parameters are an estimate of the item parameters
-on the scale of the base form, obtained using all estimates available
-for the same item parameter across all the forms. The synthetic item
-parameters and their standard errors can be extracted as follows (using
-the multiple item response function method).</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a>eqIRF<span class="sc">$</span>as</span></code></pre></div>
-<pre><code>##  Dscrmn.I1 Dscrmn.I10 Dscrmn.I11 Dscrmn.I12 Dscrmn.I13 Dscrmn.I14 Dscrmn.I15 
-##  1.0265253  1.3194832  1.0634221  1.1084510  1.3788564  1.1855599  1.0803419 
-## Dscrmn.I16 Dscrmn.I17 Dscrmn.I18 Dscrmn.I19  Dscrmn.I2 Dscrmn.I20 Dscrmn.I21 
-##  1.3726200  1.2517430  1.1480319  1.3158074  1.1382243  1.0076448  1.1950760 
-## Dscrmn.I22 Dscrmn.I23 Dscrmn.I24 Dscrmn.I25 Dscrmn.I26 Dscrmn.I27 Dscrmn.I28 
-##  1.2408239  1.2979584  1.0419701  1.2812410  1.3303749  1.3136643  1.1543945 
-## Dscrmn.I29  Dscrmn.I3 Dscrmn.I30 Dscrmn.I31 Dscrmn.I32 Dscrmn.I33 Dscrmn.I34 
-##  1.1063735  1.0785502  1.3060424  1.4688876  1.3699594  1.3342125  1.4011431 
-## Dscrmn.I35 Dscrmn.I36 Dscrmn.I37 Dscrmn.I38 Dscrmn.I39  Dscrmn.I4 Dscrmn.I40 
-##  1.2981521  1.0517954  1.2697911  1.4786267  1.3881008  1.3154817  1.4585414 
-## Dscrmn.I41 Dscrmn.I42 Dscrmn.I43 Dscrmn.I44 Dscrmn.I45 Dscrmn.I46 Dscrmn.I47 
-##  1.1902029  1.2004531  1.1829583  1.1447189  1.3970511  1.3535827  1.2626521 
-## Dscrmn.I48 Dscrmn.I49  Dscrmn.I5 Dscrmn.I50  Dscrmn.I6  Dscrmn.I7  Dscrmn.I8 
-##  1.1560787  0.9807114  1.0276615  1.2333594  0.9414937  1.0056828  1.1840444 
-##  Dscrmn.I9 
-##  1.0042032</code></pre>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a>eqIRF<span class="sc">$</span>bs</span></code></pre></div>
-<pre><code>##   Dffclt.I1  Dffclt.I10  Dffclt.I11  Dffclt.I12  Dffclt.I13  Dffclt.I14 
-##  0.04729781  0.67038640  0.93113357  0.79050080  0.43713941  0.75476773 
-##  Dffclt.I15  Dffclt.I16  Dffclt.I17  Dffclt.I18  Dffclt.I19   Dffclt.I2 
-##  0.82963371  0.11717165  0.59912678  0.57943272  0.89351648  0.01210300 
-##  Dffclt.I20  Dffclt.I21  Dffclt.I22  Dffclt.I23  Dffclt.I24  Dffclt.I25 
-##  0.07415299  0.23688948 -0.09924292 -0.41499245  0.62596997  0.39511469 
-##  Dffclt.I26  Dffclt.I27  Dffclt.I28  Dffclt.I29   Dffclt.I3  Dffclt.I30 
-##  0.28096278  0.74521506  0.38465839 -0.41131364  0.04689779  0.81859219 
-##  Dffclt.I31  Dffclt.I32  Dffclt.I33  Dffclt.I34  Dffclt.I35  Dffclt.I36 
-##  0.52979689  0.80606548  0.55956721 -0.36526934  0.45865817  0.85492089 
-##  Dffclt.I37  Dffclt.I38  Dffclt.I39   Dffclt.I4  Dffclt.I40  Dffclt.I41 
-##  0.48778059 -0.12764922  0.51879390  0.38880128  0.85877342 -0.58159689 
-##  Dffclt.I42  Dffclt.I43  Dffclt.I44  Dffclt.I45  Dffclt.I46  Dffclt.I47 
-## -0.28819961  1.26082476  1.12148675  0.56097371 -0.31006416  0.47890518 
-##  Dffclt.I48  Dffclt.I49   Dffclt.I5  Dffclt.I50   Dffclt.I6   Dffclt.I7 
-##  0.20248015  0.28033084  0.01797425  0.34072018 -0.77064798  0.14049864 
-##   Dffclt.I8   Dffclt.I9 
-##  0.33649415 -0.17811176</code></pre>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" tabindex="-1"></a>eqIRF<span class="sc">$</span>se.as</span></code></pre></div>
-<pre><code>##  Dscrmn.I1 Dscrmn.I10 Dscrmn.I11 Dscrmn.I12 Dscrmn.I13 Dscrmn.I14 Dscrmn.I15 
-## 0.03495975 0.04191803 0.04224192 0.04290795 0.04903040 0.04467058 0.04233749 
-## Dscrmn.I16 Dscrmn.I17 Dscrmn.I18 Dscrmn.I19  Dscrmn.I2 Dscrmn.I20 Dscrmn.I21 
-## 0.04859053 0.04602021 0.04332686 0.04872432 0.03720922 0.03982246 0.04486314 
-## Dscrmn.I22 Dscrmn.I23 Dscrmn.I24 Dscrmn.I25 Dscrmn.I26 Dscrmn.I27 Dscrmn.I28 
-## 0.04649240 0.04916097 0.04135682 0.04707868 0.04829875 0.04847777 0.04383667 
-## Dscrmn.I29  Dscrmn.I3 Dscrmn.I30 Dscrmn.I31 Dscrmn.I32 Dscrmn.I33 Dscrmn.I34 
-## 0.04397104 0.03598696 0.04850613 0.04241811 0.04104517 0.03937279 0.04123979 
-## Dscrmn.I35 Dscrmn.I36 Dscrmn.I37 Dscrmn.I38 Dscrmn.I39  Dscrmn.I4 Dscrmn.I40 
-## 0.03835338 0.03409166 0.03774838 0.04232501 0.04052315 0.04116937 0.04347621 
-## Dscrmn.I41 Dscrmn.I42 Dscrmn.I43 Dscrmn.I44 Dscrmn.I45 Dscrmn.I46 Dscrmn.I47 
-## 0.04362829 0.04252692 0.04270864 0.04116369 0.04621696 0.04673421 0.04281988 
-## Dscrmn.I48 Dscrmn.I49  Dscrmn.I5 Dscrmn.I50  Dscrmn.I6  Dscrmn.I7  Dscrmn.I8 
-## 0.04036263 0.03644209 0.03506514 0.04212137 0.03479529 0.03460417 0.03821698 
-##  Dscrmn.I9 
-## 0.03477178</code></pre>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a>eqIRF<span class="sc">$</span>se.bs</span></code></pre></div>
-<pre><code>##  Dffclt.I1 Dffclt.I10 Dffclt.I11 Dffclt.I12 Dffclt.I13 Dffclt.I14 Dffclt.I15 
-## 0.02626137 0.02732356 0.03786443 0.03394265 0.02580696 0.03217098 0.03520837 
-## Dffclt.I16 Dffclt.I17 Dffclt.I18 Dffclt.I19  Dffclt.I2 Dffclt.I20 Dffclt.I21 
-## 0.02454754 0.02880217 0.02960223 0.03337780 0.02491868 0.02822900 0.02654187 
-## Dffclt.I22 Dffclt.I23 Dffclt.I24 Dffclt.I25 Dffclt.I26 Dffclt.I27 Dffclt.I28 
-## 0.02835816 0.03312636 0.03080688 0.02610118 0.02541336 0.02949214 0.02720872 
-## Dffclt.I29  Dffclt.I3 Dffclt.I30 Dffclt.I31 Dffclt.I32 Dffclt.I33 Dffclt.I34 
-## 0.03550641 0.02558258 0.03083072 0.02372639 0.02743385 0.02498080 0.02563614 
-## Dffclt.I35 Dffclt.I36 Dffclt.I37 Dffclt.I38 Dffclt.I39  Dffclt.I4 Dffclt.I40 
-## 0.02460116 0.03189395 0.02493596 0.02319156 0.02436926 0.02448540 0.02694958 
-## Dffclt.I41 Dffclt.I42 Dffclt.I43 Dffclt.I44 Dffclt.I45 Dffclt.I46 Dffclt.I47 
-## 0.03787620 0.03160015 0.03757152 0.03504277 0.02531162 0.03034852 0.02583944 
-## Dffclt.I48 Dffclt.I49  Dffclt.I5 Dffclt.I50  Dffclt.I6  Dffclt.I7  Dffclt.I8 
-## 0.02675857 0.02880551 0.02628429 0.02579272 0.03742373 0.02665738 0.02530837 
-##  Dffclt.I9 
-## 0.02743718</code></pre>
+<div id="item-parameter-estimates-on-a-common-scale" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Item parameter
+estimates on a common scale</h1>
+<p>The package computes estimates of the item parameters on the scale of
+the base form, obtained using all estimates available for the same item
+across all the forms. Their standard errors are also computed. They can
+be extracted as follows (using the multiple item response function
+method).</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a><span class="fu">item.common</span>(eqIRF)</span></code></pre></div>
+<pre><code>##           Item    Estimate     StdErr
+## 1    Dscrmn.I1  1.02652530 0.03495975
+## 2   Dscrmn.I10  1.31948324 0.04191803
+## 3   Dscrmn.I11  1.06342212 0.04224192
+## 4   Dscrmn.I12  1.10845097 0.04290795
+## 5   Dscrmn.I13  1.37885644 0.04903040
+## 6   Dscrmn.I14  1.18555992 0.04467058
+## 7   Dscrmn.I15  1.08034189 0.04233749
+## 8   Dscrmn.I16  1.37261998 0.04859053
+## 9   Dscrmn.I17  1.25174298 0.04602021
+## 10  Dscrmn.I18  1.14803194 0.04332686
+## 11  Dscrmn.I19  1.31580738 0.04872432
+## 12   Dscrmn.I2  1.13822432 0.03720922
+## 13  Dscrmn.I20  1.00764475 0.03982246
+## 14  Dscrmn.I21  1.19507601 0.04486314
+## 15  Dscrmn.I22  1.24082387 0.04649240
+## 16  Dscrmn.I23  1.29795840 0.04916097
+## 17  Dscrmn.I24  1.04197007 0.04135682
+## 18  Dscrmn.I25  1.28124101 0.04707868
+## 19  Dscrmn.I26  1.33037490 0.04829875
+## 20  Dscrmn.I27  1.31366426 0.04847777
+## 21  Dscrmn.I28  1.15439454 0.04383667
+## 22  Dscrmn.I29  1.10637354 0.04397104
+## 23   Dscrmn.I3  1.07855018 0.03598696
+## 24  Dscrmn.I30  1.30604236 0.04850613
+## 25  Dscrmn.I31  1.46888755 0.04241811
+## 26  Dscrmn.I32  1.36995941 0.04104517
+## 27  Dscrmn.I33  1.33421246 0.03937279
+## 28  Dscrmn.I34  1.40114311 0.04123979
+## 29  Dscrmn.I35  1.29815213 0.03835338
+## 30  Dscrmn.I36  1.05179536 0.03409166
+## 31  Dscrmn.I37  1.26979112 0.03774838
+## 32  Dscrmn.I38  1.47862668 0.04232501
+## 33  Dscrmn.I39  1.38810080 0.04052315
+## 34   Dscrmn.I4  1.31548168 0.04116937
+## 35  Dscrmn.I40  1.45854135 0.04347621
+## 36  Dscrmn.I41  1.19020293 0.04362829
+## 37  Dscrmn.I42  1.20045309 0.04252692
+## 38  Dscrmn.I43  1.18295833 0.04270864
+## 39  Dscrmn.I44  1.14471888 0.04116369
+## 40  Dscrmn.I45  1.39705107 0.04621696
+## 41  Dscrmn.I46  1.35358270 0.04673421
+## 42  Dscrmn.I47  1.26265214 0.04281988
+## 43  Dscrmn.I48  1.15607873 0.04036263
+## 44  Dscrmn.I49  0.98071137 0.03644209
+## 45   Dscrmn.I5  1.02766152 0.03506514
+## 46  Dscrmn.I50  1.23335941 0.04212137
+## 47   Dscrmn.I6  0.94149371 0.03479529
+## 48   Dscrmn.I7  1.00568277 0.03460417
+## 49   Dscrmn.I8  1.18404445 0.03821698
+## 50   Dscrmn.I9  1.00420319 0.03477178
+## 51   Dffclt.I1  0.04729781 0.02626137
+## 52  Dffclt.I10  0.67038640 0.02732356
+## 53  Dffclt.I11  0.93113357 0.03786443
+## 54  Dffclt.I12  0.79050080 0.03394265
+## 55  Dffclt.I13  0.43713941 0.02580696
+## 56  Dffclt.I14  0.75476773 0.03217098
+## 57  Dffclt.I15  0.82963371 0.03520837
+## 58  Dffclt.I16  0.11717165 0.02454754
+## 59  Dffclt.I17  0.59912678 0.02880217
+## 60  Dffclt.I18  0.57943272 0.02960223
+## 61  Dffclt.I19  0.89351648 0.03337780
+## 62   Dffclt.I2  0.01210300 0.02491868
+## 63  Dffclt.I20  0.07415299 0.02822900
+## 64  Dffclt.I21  0.23688948 0.02654187
+## 65  Dffclt.I22 -0.09924292 0.02835816
+## 66  Dffclt.I23 -0.41499245 0.03312636
+## 67  Dffclt.I24  0.62596997 0.03080688
+## 68  Dffclt.I25  0.39511469 0.02610118
+## 69  Dffclt.I26  0.28096278 0.02541336
+## 70  Dffclt.I27  0.74521506 0.02949214
+## 71  Dffclt.I28  0.38465839 0.02720872
+## 72  Dffclt.I29 -0.41131364 0.03550641
+## 73   Dffclt.I3  0.04689779 0.02558258
+## 74  Dffclt.I30  0.81859219 0.03083072
+## 75  Dffclt.I31  0.52979689 0.02372639
+## 76  Dffclt.I32  0.80606548 0.02743385
+## 77  Dffclt.I33  0.55956721 0.02498080
+## 78  Dffclt.I34 -0.36526934 0.02563614
+## 79  Dffclt.I35  0.45865817 0.02460116
+## 80  Dffclt.I36  0.85492089 0.03189395
+## 81  Dffclt.I37  0.48778059 0.02493596
+## 82  Dffclt.I38 -0.12764922 0.02319156
+## 83  Dffclt.I39  0.51879390 0.02436926
+## 84   Dffclt.I4  0.38880128 0.02448540
+## 85  Dffclt.I40  0.85877342 0.02694958
+## 86  Dffclt.I41 -0.58159689 0.03787620
+## 87  Dffclt.I42 -0.28819961 0.03160015
+## 88  Dffclt.I43  1.26082476 0.03757152
+## 89  Dffclt.I44  1.12148675 0.03504277
+## 90  Dffclt.I45  0.56097371 0.02531162
+## 91  Dffclt.I46 -0.31006416 0.03034852
+## 92  Dffclt.I47  0.47890518 0.02583944
+## 93  Dffclt.I48  0.20248015 0.02675857
+## 94  Dffclt.I49  0.28033084 0.02880551
+## 95   Dffclt.I5  0.01797425 0.02628429
+## 96  Dffclt.I50  0.34072018 0.02579272
+## 97   Dffclt.I6 -0.77064798 0.03742373
+## 98   Dffclt.I7  0.14049864 0.02665738
+## 99   Dffclt.I8  0.33649415 0.02530837
+## 100  Dffclt.I9 -0.17811176 0.02743718</code></pre>
 </div>
 <div id="equated-scores" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Equated scores</h1>
 <p>Equated scores with the true score equating method</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a>scTSE<span class="ot">&lt;-</span><span class="fu">score</span>(eqIRF)</span></code></pre></div>
-<pre><code>## The following scores are not attainable: 0 
-## The following scores are not attainable: 0 
-## The following scores are not attainable: 0 
-## The following scores are not attainable: 0</code></pre>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a><span class="fu">round</span>(scTSE,<span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a>scTSE<span class="ot">&lt;-</span><span class="fu">score</span>(eqIRF)</span></code></pre></div>
+<pre><code>## The following scores are not attainable: 0</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" tabindex="-1"></a><span class="fu">round</span>(scTSE,<span class="dv">3</span>)</span></code></pre></div>
 <pre><code>##     theta test1 test2.as.test1 StdErr_test2.as.test1 test3.as.test1
 ## 1  -2.344     1          1.073                 0.027          0.783
 ## 2  -1.661     2          2.072                 0.034          1.651
@@ -1907,8 +1936,8 @@ the multiple item response function method).</p>
 ## 20                 0.000</code></pre>
 <p>Equated scores with the observed score equating method, avoiding
 computation of standard errors</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a>scOSE<span class="ot">&lt;-</span><span class="fu">score</span>(eqIRF, <span class="at">method =</span> <span class="st">&quot;OSE&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb50-2"><a href="#cb50-2" tabindex="-1"></a><span class="fu">round</span>(scOSE,<span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a>scOSE<span class="ot">&lt;-</span><span class="fu">score</span>(eqIRF, <span class="at">method =</span> <span class="st">&quot;OSE&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" tabindex="-1"></a><span class="fu">round</span>(scOSE,<span class="dv">3</span>)</span></code></pre></div>
 <pre><code>##    test1 test2.as.test1 test3.as.test1 test4.as.test1 test5.as.test1
 ## 1      0          0.031         -0.164         -0.025         -0.158
 ## 2      1          1.032          0.714          0.983          0.725

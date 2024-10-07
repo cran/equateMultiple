@@ -2,8 +2,8 @@ useDynLib(equateMultiple, .registration = TRUE)
 
 # Imported functions
 importFrom(Rcpp, evalCpp)
-importFrom("stats", "nlminb", "reshape", "aggregate", "lm", "optim", "relevel", "coef", "model.matrix")
-importFrom("graphics", "plot")
+importFrom("stats", "nlminb", "reshape", "aggregate", "lm", "optim", "relevel", "coef", "model.matrix", "complete.cases")
+importFrom("graphics", "plot", "abline", "par")
 importFrom("equateIRT", "modIRT", "eqc", "itm", "score")
 importFrom("statmod", "gauss.quad.prob")
 importFrom("numDeriv", "grad", "jacobian")
@@ -11,15 +11,19 @@ importFrom("data.table", "rbindlist", ":=")
 importFrom("Matrix", "Matrix", "bdiag")
 importFrom("mvtnorm", "dmvnorm")
 importFrom("utils", "capture.output")
+importFrom("grDevices", "dev.interactive", "devAskNewPage")
+
 
 # Exported functions
-export(multiec, print.mlteqc, summary.mlteqc, eqc.mlteqc, itm.mlteqc, score.mlteqc)
+export(multiec, item.common)
 
 # S3 methods
 S3method(print, mlteqc)
 S3method(summary, mlteqc)
+S3method(plot, mlteqc)
 S3method(eqc, mlteqc)
 S3method(itm, mlteqc)
 S3method(score, mlteqc)
+S3method(item.common, mlteqc)
 
 

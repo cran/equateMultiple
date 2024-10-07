@@ -609,34 +609,6 @@ List partialABgammaRcpp(
 
 
 
-// [[Rcpp::export]]
-arma::mat VarExtRcpp ( List x ) {
-
-	//x: list of matrices 
-
-	int n = x.size() ;
-	int dimen = 0 ;
-	arma::ivec dimvec(n) ;
-
-	for(int i=0; i<n; i++) {
-		arma::mat xi = as<arma::mat>(x[i]);
-		dimvec[i] = xi.n_rows ; 
-		dimen += dimvec[i] ;
-	}
-
-	arma::mat X(dimen,dimen);
-	X.zeros();
-	int idx=0;
-
-	for(int i=0; i<n; i++) {
-		arma::mat xi = as<arma::mat>(x[i]);
-		X.submat( idx, idx, idx + dimvec[i] - 1, idx + dimvec[i] - 1 ) = xi ;
-		idx = idx + dimvec[i] ;
-	}
-
-	return(X);
-}
-
 
 
 // itertive proportional fitting
