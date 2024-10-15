@@ -9,7 +9,7 @@
 	before and after conversion.
 }
 \usage{
-\method{plot}{mlteqc}(x, form, ask = prod(par("mfcol")) < x$itmp*2 && dev.interactive(), ...)
+\method{plot}{mlteqc}(x, form = 2, ask = prod(par("mfcol")) < x$itmp*2 && dev.interactive(), ...)
 }
 \arguments{
 	\item{x}{

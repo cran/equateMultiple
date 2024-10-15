@@ -1,7 +1,7 @@
 Package: equateMultiple
 Type: Package
 Title: Equating of Multiple Forms
-Version: 1.1.0
+Version: 1.1.1
 Authors@R: c(
    person("Michela", "Battauz", role = c("aut", "cre"), email = "michela.battauz@uniud.it"),
    person("Waldir", "Leoncio", role = "ctb"))
@@ -17,6 +17,6 @@ LinkingTo: Rcpp, RcppArmadillo, RcppDist
 Suggests: knitr, rmarkdown, ltm, mirt
 VignetteBuilder: knitr
 NeedsCompilation: yes
-Packaged: 2024-10-07 08:21:26 UTC; Battauz
+Packaged: 2024-10-15 10:15:38 UTC; pc
 Repository: CRAN
-Date/Publication: 2024-10-07 08:40:05 UTC
+Date/Publication: 2024-10-15 14:10:01 UTC

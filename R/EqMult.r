@@ -1328,8 +1328,9 @@ derAB_1PL <- function(x, par, itmpar, itmvar, num.forms, base, X_list, pos)
 
 
 
-plot.mlteqc <- function(x, form, ask = prod(par("mfcol")) < x$itmp*2 && dev.interactive(), ...)
+plot.mlteqc <- function(x, form = 2, ask = prod(par("mfcol")) < x$itmp*2 && dev.interactive(), ...)
 {
+  message("The parameters of Form ", form, " are plotted against the parameters of the base form.\n")
   if (ask) {
     oask <- devAskNewPage(TRUE)
     on.exit(devAskNewPage(oask))
