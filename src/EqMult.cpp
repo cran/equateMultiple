@@ -812,7 +812,3 @@ double profLikRcpp_1PL(arma::vec par, arma::vec coef, arma::uvec t, List X_list,
   return -out;
 }
 
-
-
-
-

@@ -285,7 +285,7 @@ multiec_irf <- function(mods, base, nq = 30, method, se, start, iter.max, trace)
       pajA <- -pajA / invT
       pajA <- as.matrix(pajA[, -base])
 
-      tablong <- reshape(tab, direction = "long", varying = list(2:6), idvar = "itms", v.names = "value")
+      tablong <- reshape(tab, direction = "long", varying = list(modsnames), idvar = "itms", v.names = "value")
       tablong <- tablong[!is.na(tablong$value), ]
       itms_t <- rownames(tablong)
       dAB_gamma_all <- matrix(0, (T - 1) * 2, length(itms_t))
@@ -321,7 +321,7 @@ multiec_irf <- function(mods, base, nq = 30, method, se, start, iter.max, trace)
     }
     if (itmp == 1)
     {
-      tablong <- reshape(tab, direction = "long", varying = list(2:6), idvar = "itms", v.names = "value")
+      tablong <- reshape(tab, direction = "long", varying = list(modsnames), idvar = "itms", v.names = "value")
       tablong <- tablong[!is.na(tablong$value), ]
       itms_t <- rownames(tablong)
       dAB_gamma_all <- matrix(0, T - 1, length(itms_t))
@@ -1097,14 +1097,23 @@ getitmpar <- function(mods, t)
 {
   ct <- mods$coefficients
   itemstype <- substr(names(ct), 1, 6)
-  noGussng <- itemstype != "Gussng"
-  ct <- ct[noGussng]
-  itemstype <- itemstype[noGussng]
+#  noGussng <- itemstype != "Gussng"
+#  ct <- ct[noGussng]
+#  itemstype <- itemstype[noGussng]
   itemslab <- substr(names(ct), 8, 100)
   data.frame(items = names(ct), itemstype = itemstype, itemslab = itemslab, coef = ct, t = t)
 }
 
+
 delGussng <- function(x) 
+{
+  which_guess <- grep("Gussng", x$itemstype)
+  if (length(which_guess) > 0)
+    x <- x[-which_guess,]
+  x
+}
+
+delGussng2 <- function(x) 
 {
   which_guess <- grep("Gussng", rownames(x))
   if (length(which_guess) > 0)
@@ -1112,27 +1121,31 @@ delGussng <- function(x)
   x
 }
 
+
 multiec_lik <- function(mods, base, se, obsinf, start, iter.max, trace) 
 {
   itemstype <- items <- Y <- items.t <- NULL
   if (trace) cat("Computation of equating coefficients  .  .  . ")
   num.forms <- length(mods)
 
-  itmpar <- mapply(FUN = getitmpar, mods = mods, t = 1:num.forms, SIMPLIFY = FALSE)
-  itmpar <- rbindlist(itmpar)
-  itmpar[, items.t := paste(items, t, sep = ".")]
-
+  itmparFull <- mapply(FUN = getitmpar, mods = mods, t = 1:num.forms, SIMPLIFY = FALSE)
+  itmparFull <- rbindlist(itmparFull)
+  itmparFull[, items.t := paste(items, t, sep = ".")]
+  
+  itmpar <- delGussng(itmparFull)
+  
   DscrmnNum <- grep("Dscrmn", itmpar$items)
   DffcltNum <- grep("Dffclt", itmpar$items)
 
-  itmvar <- lapply(mods, FUN = function(x) x$var)
-  itmvar <- lapply(itmvar, delGussng)
-  for (i in 1:length(itmvar)) rownames(itmvar[[i]]) <- colnames(itmvar[[i]]) <- paste(rownames(itmvar[[i]]), i, sep = ".")
+  varFull <- lapply(mods, FUN = function(x) x$var)
+  for (i in 1:length(varFull)) rownames(varFull[[i]]) <- colnames(varFull[[i]]) <- paste(rownames(varFull[[i]]), i, sep = ".")
+  
+  itmvar <- lapply(varFull, delGussng2)
 
-  itmp <- 2
-  if (sum(substr(itmpar$items, 1, 6) == "Dscrmn") == 0)
-    itmp = 1
-  if (sum(substr(itmpar$itmes, 1, 6) == "Gussng") > 0)
+  itmp <- 1
+  if (any(substr(itmparFull$items, 1, 6) == "Dscrmn"))
+    itmp = 2
+  if (any(substr(itmparFull$items, 1, 6) == "Gussng"))
     itmp = 3
 
   if (itmp >= 2) 
@@ -1210,7 +1223,13 @@ multiec_lik <- function(mods, base, se, obsinf, start, iter.max, trace)
     itmpar[itemstype == "Dscrmn", Y := coef / A]
     itmpar[itemstype == "Dffclt", Y := coef * A + B]
 
-    tab <- data.table::dcast(itmpar, items ~ t, value.var = c("coef", "Y"))
+    itmparFull$A <- A[itmparFull$t]
+    itmparFull$B <- B[itmparFull$t]
+    itmparFull$Y <- itmparFull$coef
+    itmparFull[itemstype == "Dscrmn", Y := coef / A]
+    itmparFull[itemstype == "Dffclt", Y := coef * A + B]
+    
+    tab <- data.table::dcast(itmparFull, items ~ t, value.var = c("coef", "Y"))
     tab <- as.data.frame(tab)
     sel <- which(colnames(tab) == paste("Y", base, sep = "_"))
     tab <- tab[, -sel]  # delete base form converted
@@ -1252,7 +1271,7 @@ multiec_lik <- function(mods, base, se, obsinf, start, iter.max, trace)
         var_gamma <- bdiag(itmvar)
         
         VarNames_list <- sapply(itmvar, function(x) rownames(x))
-        VarNames <- as.vector(VarNames_list)
+        VarNames <- unlist(VarNames_list)
         rownames(var_gamma) <- colnames(var_gamma) <- VarNames
 
         sel <- colnames(derAB_gamma)
@@ -1289,7 +1308,7 @@ multiec_lik <- function(mods, base, se, obsinf, start, iter.max, trace)
       {
         var_gamma <- bdiag(itmvar)
         VarNames_list <- sapply(itmvar, function(x) rownames(x))
-        VarNames <- as.vector(VarNames_list)
+        VarNames <- unlist(VarNames_list)
         rownames(var_gamma) <- colnames(var_gamma) <- VarNames
       }
       sel <- colnames(der_beta_gamma)
@@ -1306,7 +1325,7 @@ multiec_lik <- function(mods, base, se, obsinf, start, iter.max, trace)
     conv <- "optimization failed"
     as <- bs <- NULL
   }
-  out <- list(A = A, B = B, se.A = se.A, se.B = se.B, varAB = varAB, as = as, bs = bs, se.as = se.as, se.bs = se.bs, tab = tab, varFull = itmvar, partial = partial, itmp = itmp, method = "lik", basename = modsnames[base], convergence = conv)
+  out <- list(A = A, B = B, se.A = se.A, se.B = se.B, varAB = varAB, as = as, bs = bs, se.as = se.as, se.bs = se.bs, tab = tab, varFull = varFull, partial = partial, itmp = itmp, method = "lik", basename = modsnames[base], convergence = conv)
   class(out) <- "mlteqc"
   return(out)
 }
@@ -1316,13 +1335,13 @@ multiec_lik <- function(mods, base, se, obsinf, start, iter.max, trace)
 # x = item parameters
 derAB <- function(x, par, itmpar, itmvar, num.forms, base, DffcltNum, DscrmnNum, X_list, pos) 
 {
-  itmpar$coef <- x[itmpar$items.t]
+  itmpar[names(x),on="items.t",coef:=x] # substitute coef column in itmpar with x (=gamma)
   grad(func = profLikRcpp, x = par, coef = itmpar$coef, t = itmpar$t - 1, X_list = X_list, itmvar = itmvar, numforms = num.forms, notbase = (1:num.forms)[-base] - 1, DffcltNum = DffcltNum - 1, DscrmnNum = DscrmnNum - 1, pos = pos - 1)
 }
 
 derAB_1PL <- function(x, par, itmpar, itmvar, num.forms, base, X_list, pos) 
 {
-  itmpar$coef <- x[itmpar$items.t]
+  itmpar[names(x),on="items.t",coef:=x] # substitute coef column in itmpar with x (=gamma)
   grad(func = profLikRcpp_1PL, x = par, coef = itmpar$coef, t = itmpar$t - 1, X_list = X_list, itmvar = itmvar, numforms = num.forms, notbase = (1:num.forms)[-base] - 1, pos = pos - 1)
 }
 

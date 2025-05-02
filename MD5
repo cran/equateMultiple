@@ -1,12 +1,12 @@
-195d339f394dd65d612366bf7589b833 *DESCRIPTION
+248f02bbcfe54bf81fe208a06cc92969 *DESCRIPTION
 767b97eb3b9e61c6072cd6c537134469 *NAMESPACE
-9092fd30a9e3c885ede9c2337dee8357 *R/EqMult.r
+19fa5db38113db41a6e6dfcc0b425a03 *R/EqMult.r
 d01e25f6ffb7d07624036da4b9b49a1c *R/RcppExports.R
-c4d72200e1ccff5eab37efc62607112d *build/vignette.rds
+df93175bbd59f5dbc46a777d129709f0 *build/vignette.rds
 fe52e2db3526ddea4241a1299bc1b4ee *data/mathTest.rda
 888ae05bc5de614cc491f02dfef6b279 *inst/doc/equateMultiple_tutorial.R
 e5c4d3003c206b727e86298ae67ce1d2 *inst/doc/equateMultiple_tutorial.Rmd
-ba63ef31cffc2cd89988dcfdbcf81a74 *inst/doc/equateMultiple_tutorial.html
+182aec7049b4d6f17f811096588ef83a *inst/doc/equateMultiple_tutorial.html
 a298278544598cd99931772ab1a11d42 *man/eqc.Rd
 ceba71f48ae98debe2f41d7e80c75edb *man/equateMultiple-package.Rd
 2a9d53a950b756d5dd48f95871cca6a7 *man/item.common.Rd
@@ -16,7 +16,7 @@ a500ba1cddb8367619977c77e3a56d9d *man/mathTest.Rd
 fd251b7d78fafa737a9ad98d733a3c3c *man/plot.mlteqc.Rd
 3195e00da602b9b18d1c9f39abd93671 *man/score.Rd
 8148fadbf4eae606cecee7853b555c7a *man/summary.mlteqc.Rd
-402a6af69c0dd5af726584770f5cfd38 *src/EqMult.cpp
+285a1cdbe3571f40a35b52b21601b73c *src/EqMult.cpp
 e62585629948e7dd143efbad43c2a6eb *src/Makevars
 e62585629948e7dd143efbad43c2a6eb *src/Makevars.win
 c37ffd564209d4842162f7fbe99575de *src/RcppExports.cpp
