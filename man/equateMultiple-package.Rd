@@ -23,6 +23,7 @@ and the standard errors of the equating coefficients and item parameters on a co
 Equated scores can be computed using true score equating and 
 observed score equating methods. Standard errors of equated scores
 are also provided.
+A detailed description of the package is provided in Battauz (2025).
 }
 \author{
 	Michela Battauz [aut, cre], Waldir Leoncio [ctb]
@@ -32,6 +33,10 @@ are also provided.
 \references{
 	Battauz, M. (2017). Multiple equating of separate IRT calibrations.
 	\emph{Psychometrika}, \bold{82}, 610--636. doi:10.1007/s11336-016-9517-x.
+	
+	Battuz, M (2025).equateMultiple: An R Package to Equate Multiple Forms.
+	\emph{Journal of Statistical Software}, \bold{115}, 1--21. 
+	doi: 10.18637/jss.v115.i11.
 	
 	Battauz, M., Leoncio, W. (2023). 
 	A Likelihood Approach to Item Response Theory Equating of Multiple Forms

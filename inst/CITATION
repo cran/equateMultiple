@@ -1,0 +1,14 @@
+bibentry(bibtype = "Article",
+  title        = "{equateMultiple}: An {R} Package to Equate Multiple Forms",
+  author       = person(given = "Michela",
+                        family = "Battauz",
+                        email = "michela.battauz@uniud.it"),
+  journal      = "Journal of Statistical Software",
+  year         = "2025",
+  volume       = "115",
+  number       = "11",
+  pages        = "1--21",
+  doi          = "10.18637/jss.v115.i11",
+  header       = "To cite equateMultiple in publications use:"
+)
+
